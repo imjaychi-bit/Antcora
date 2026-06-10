@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Antcora</title>
+    <link rel="icon" type="image/svg+xml" href="Recursos/Antcora favicon.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/estil.css">
+    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.5.0/model-viewer.min.js"></script>
+</head>
+<body>
+
+    <canvas id="trail-canvas"></canvas>
+    <div id="custom-cursor"></div>
+
+    <header class="nav">
+        <div class="nav-logo">
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <line x1="12" y1="2" x2="12" y2="22" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                <line x1="2" y1="12" x2="22" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                <line x1="4.93" y1="4.93" x2="19.07" y2="19.07" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                <line x1="19.07" y1="4.93" x2="4.93" y2="19.07" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            <span>Antcora</span>
+        </div>
+        <button class="btn-pill">Get Antcora</button>
+    </header>
+
+    <main class="hero">
+        <div class="dots-container" id="dots-container"></div>
+        <div class="hero-content">
+            <h1 class="hero-title">Anchor your experience™</h1>
+            <p class="hero-subtitle">A new way to experience the physical world. Read the narratives<br>tied to your exact location and explore the map of human<br>experiences.</p>
+            <button class="btn-pill btn-pill--outline">Discover Antcora</button>
+        </div>
+    </main>
+
+    <section class="badges-section">
+        <div class="badges-bg-badges">
+            <div class="badge-item badge-item--left">
+                <div class="badge-viewer-wrap">
+                    <model-viewer
+                        src="Recursos/ANTS_jin%20badge.glb"
+                        auto-rotate
+                        auto-rotate-delay="0"
+                        rotation-per-second="22deg"
+                        interaction-prompt="none"
+                        shadow-intensity="0"
+                        exposure="1.3"
+                        class="badge-viewer badge-gold"
+                    ></model-viewer>
+                </div>
+                <div class="badge-shadow"></div>
+            </div>
+            <div class="badge-item badge-item--right">
+                <div class="badge-viewer-wrap badge-viewer-wrap--delay">
+                    <model-viewer
+                        src="Recursos/ANTS_jin%20badge.glb"
+                        auto-rotate
+                        auto-rotate-delay="0"
+                        rotation-per-second="-22deg"
+                        interaction-prompt="none"
+                        shadow-intensity="0"
+                        exposure="1.3"
+                        class="badge-viewer badge-silver"
+                    ></model-viewer>
+                </div>
+                <div class="badge-shadow badge-shadow--delay"></div>
+            </div>
+        </div>
+        <div class="badges-content">
+            <h2 class="badges-title">Gold &amp; Silver</h2>
+            <p class="badges-desc">We believe that every step forward should be celebrated. That's why Antcora rewards your hard work with unique, unlockable badges! Show off your progress, track your achievements, and let your everyday efforts shine. Keep up the great work!</p>
+            <button class="btn-pill">Get your badges</button>
+        </div>
+    </section>
+
+    <section class="ants-section">
+        <div class="ants-grid">
+
+            <!-- 1: skin2 · eyes1 · brows7 · beard1 · mouth11 · nose8 · bald3 -->
+            <div class="ants-avatar">
+                <img src="Avatar components/Skin/Skin_2_antcora.svg" alt="">
+                <img src="Avatar components/Eyes/Eyes_eyes 1.svg" alt="">
+                <img src="Avatar components/Brows/Brows_brows 7.svg" alt="">
+                <img src="Avatar components/Details/Details_beard 1.svg" alt="">
+                <img src="Avatar components/Mouth/Mouth_mouth 11.svg" alt="">
+                <img src="Avatar components/Nose/Nose_nose 8.svg" alt="">
+                <img src="Avatar components/Hair/Hair_bald_3_antcora.svg" alt="">
+            </div>
+
+            <!-- 2: skin1 · lashes2 · brows5 · button earrings · mouth1 · nose4 · bun grey -->
+            <div class="ants-avatar">
+                <img src="Avatar components/Skin/Skin_1_antcora.svg" alt="">
+                <img src="Avatar components/Eyes/Eyes_lashes 2.svg" alt="">
+                <img src="Avatar components/Brows/Brows_brows 5.svg" alt="">
+                <img src="Avatar components/Earrings/Earrings_button earrings.svg" alt="">
+                <img src="Avatar components/Mouth/Mouth_mouth 1.svg" alt="">
+                <img src="Avatar components/Nose/Nose_nose 4.svg" alt="">
+                <img src="Avatar components/Hair/Hair_bun grey.svg" alt="">
+            </div>
+
+            <!-- 3: skin2 · lashes2 · brows1 · earrings · mole1 · mouth4 · nose3 · middle bangs cover black -->
+            <div class="ants-avatar">
+                <img src="Avatar components/Skin/Skin_2_antcora.svg" alt="">
+                <img src="Avatar components/Eyes/Eyes_lashes 2.svg" alt="">
+                <img src="Avatar components/Brows/Brows_brows 1.svg" alt="">
+                <img src="Avatar components/Earrings/Earrings_earrings.svg" alt="">
+                <img src="Avatar components/Details/Details_mole 1.svg" alt="">
+                <img src="Avatar components/Mouth/Mouth_mouth 4.svg" alt="">
+                <img src="Avatar components/Nose/Nose_nose 3.svg" alt="">
+                <img src="Avatar components/Hair/Hair_middle bangs cover grey.svg" alt="" style="filter:brightness(0.15)">
+            </div>
+
+            <!-- 4: skin1 · eyes2 · brows1 · mouth1 · nose12 · bald2 -->
+            <div class="ants-avatar">
+                <img src="Avatar components/Skin/Skin_1_antcora.svg" alt="">
+                <img src="Avatar components/Eyes/Eyes_eyes 2.svg" alt="">
+                <img src="Avatar components/Brows/Brows_brows 1.svg" alt="">
+                <img src="Avatar components/Mouth/Mouth_mouth 1.svg" alt="">
+                <img src="Avatar components/Nose/Nose_nose 12.svg" alt="">
+                <img src="Avatar components/Hair/Hair_bald_2_antcora.svg" alt="">
+            </div>
+
+            <!-- 5: skin2 · eyes2 · brows6 · earring · beard1 · mouth1 · nose2 · bun black · square glasses -->
+            <div class="ants-avatar">
+                <img src="Avatar components/Skin/Skin_2_antcora.svg" alt="">
+                <img src="Avatar components/Eyes/Eyes_eyes 2.svg" alt="">
+                <img src="Avatar components/Brows/Brows_brows 6.svg" alt="">
+                <img src="Avatar components/Earrings/Earrings_earring.svg" alt="">
+                <img src="Avatar components/Details/Details_beard 1.svg" alt="">
+                <img src="Avatar components/Mouth/Mouth_mouth 1.svg" alt="">
+                <img src="Avatar components/Nose/Nose_nose 2.svg" alt="">
+                <img src="Avatar components/Hair/Hair_bun grey.svg" alt="" style="filter:brightness(0.15)">
+                <img src="Avatar components/Glasses/Glasses_square glasses.svg" alt="">
+            </div>
+
+            <!-- 6: skin1 · lashes2 · brows1 · earrings · mouth12 · nose1 · open bangs black -->
+            <div class="ants-avatar">
+                <img src="Avatar components/Skin/Skin_1_antcora.svg" alt="">
+                <img src="Avatar components/Eyes/Eyes_lashes 2.svg" alt="">
+                <img src="Avatar components/Brows/Brows_brows 1.svg" alt="">
+                <img src="Avatar components/Earrings/Earrings_earrings.svg" alt="">
+                <img src="Avatar components/Mouth/Mouth_mouth 12.svg" alt="">
+                <img src="Avatar components/Nose/Nose_nose 1.svg" alt="">
+                <img src="Avatar components/Hair/Hair_open bangs grey.svg" alt="" style="filter:brightness(0.15)">
+            </div>
+
+            <!-- 7: skin1 · lashes1 · brows2 · cheeks · mouth1 · nose1 · fangs grey -->
+            <div class="ants-avatar">
+                <img src="Avatar components/Skin/Skin_1_antcora.svg" alt="">
+                <img src="Avatar components/Eyes/Eyes_lashes 1.svg" alt="">
+                <img src="Avatar components/Brows/Brows_brows 2.svg" alt="">
+                <img src="Avatar components/Details/Details_cheeks.svg" alt="">
+                <img src="Avatar components/Mouth/Mouth_mouth 1.svg" alt="">
+                <img src="Avatar components/Nose/Nose_nose 1.svg" alt="">
+                <img src="Avatar components/Hair/Hair_fangs grey.svg" alt="">
+            </div>
+
+            <!-- 8: skin2 · eyes1 · brows1 · earrings · mouth1 · nose4 · two block black · square glasses -->
+            <div class="ants-avatar">
+                <img src="Avatar components/Skin/Skin_2_antcora.svg" alt="">
+                <img src="Avatar components/Eyes/Eyes_eyes 1.svg" alt="">
+                <img src="Avatar components/Brows/Brows_brows 1.svg" alt="">
+                <img src="Avatar components/Earrings/Earrings_earrings.svg" alt="">
+                <img src="Avatar components/Mouth/Mouth_mouth 1.svg" alt="">
+                <img src="Avatar components/Nose/Nose_nose 4.svg" alt="">
+                <img src="Avatar components/Hair/Hair_two block grey.svg" alt="" style="filter:brightness(0.15)">
+                <img src="Avatar components/Glasses/Glasses_square glasses.svg" alt="">
+            </div>
+
+            <!-- ANTS logo (spans 2 cols) -->
+            <div class="ants-logo-cell">
+                <img src="Recursos/ANTS by Antcora logo.svg" alt="ANTS by Antcora">
+            </div>
+
+            <!-- 9: skin1 · eyes1 · brows2 · mouth7 · nose3 · tuppe black -->
+            <div class="ants-avatar">
+                <img src="Avatar components/Skin/Skin_1_antcora.svg" alt="">
+                <img src="Avatar components/Eyes/Eyes_eyes 1.svg" alt="">
+                <img src="Avatar components/Brows/Brows_brows 2.svg" alt="">
+                <img src="Avatar components/Mouth/Mouth_mouth 7.svg" alt="">
+                <img src="Avatar components/Nose/Nose_nose 3.svg" alt="">
+                <img src="Avatar components/Hair/Hair_tuppe grey.svg" alt="" style="filter:brightness(0.15)">
+            </div>
+
+            <!-- 10: skin1 · eyes1 · brows8 · button earrings · mouth11 · nose2 · long french grey -->
+            <div class="ants-avatar">
+                <img src="Avatar components/Skin/Skin_1_antcora.svg" alt="">
+                <img src="Avatar components/Eyes/Eyes_eyes 1.svg" alt="">
+                <img src="Avatar components/Brows/Brows_brows 8.svg" alt="">
+                <img src="Avatar components/Earrings/Earrings_button earrings.svg" alt="">
+                <img src="Avatar components/Mouth/Mouth_mouth 11.svg" alt="">
+                <img src="Avatar components/Nose/Nose_nose 2.svg" alt="">
+                <img src="Avatar components/Hair/Hair_long french grey.svg" alt="">
+            </div>
+
+            <!-- 11: skin2 · eyes2 · brows9 · mole1 · mouth5 · nose3 · open bangs cover grey · square glasses -->
+            <div class="ants-avatar">
+                <img src="Avatar components/Skin/Skin_2_antcora.svg" alt="">
+                <img src="Avatar components/Eyes/Eyes_eyes 2.svg" alt="">
+                <img src="Avatar components/Brows/Brows_brows 9.svg" alt="">
+                <img src="Avatar components/Details/Details_mole 1.svg" alt="">
+                <img src="Avatar components/Mouth/Mouth_mouth 5.svg" alt="">
+                <img src="Avatar components/Nose/Nose_nose 3.svg" alt="">
+                <img src="Avatar components/Hair/Hair_open bangs cover grey.svg" alt="">
+                <img src="Avatar components/Glasses/Glasses_square glasses.svg" alt="">
+            </div>
+
+            <!-- 12: skin2 · eyes2 · brows6 · moustache1 · mouth2 · nose7 · middle part white · monocle -->
+            <div class="ants-avatar">
+                <img src="Avatar components/Skin/Skin_2_antcora.svg" alt="">
+                <img src="Avatar components/Eyes/Eyes_eyes 2.svg" alt="">
+                <img src="Avatar components/Brows/Brows_brows 6.svg" alt="">
+                <img src="Avatar components/Details/Details_moustache 1.svg" alt="">
+                <img src="Avatar components/Mouth/Mouth_mouth 2.svg" alt="">
+                <img src="Avatar components/Nose/Nose_nose 7.svg" alt="">
+                <img src="Avatar components/Hair/Hair_middle part grey.svg" alt="" style="filter:brightness(2.4) saturate(0)">
+                <img src="Avatar components/Glasses/Glasses_monocle.svg" alt="">
+            </div>
+
+            <!-- 13: skin6 · eyes1 · brows9 · earrings · mouth7 · nose12 · buzz cut black -->
+            <div class="ants-avatar">
+                <img src="Avatar components/Skin/Skin_6_antcora.svg" alt="">
+                <img src="Avatar components/Eyes/Eyes_eyes 1.svg" alt="">
+                <img src="Avatar components/Brows/Brows_brows 9.svg" alt="">
+                <img src="Avatar components/Earrings/Earrings_earrings.svg" alt="">
+                <img src="Avatar components/Mouth/Mouth_mouth 7.svg" alt="">
+                <img src="Avatar components/Nose/Nose_nose 12.svg" alt="">
+                <img src="Avatar components/Hair/Hair_buzz cut grey.svg" alt="" style="filter:brightness(0.15)">
+            </div>
+
+            <!-- 14: skin4 · lashes2 · brows2 · mole2 · mouth10 · nose5 · bangs cover white -->
+            <div class="ants-avatar">
+                <img src="Avatar components/Skin/Skin_4_antcora.svg" alt="">
+                <img src="Avatar components/Eyes/Eyes_lashes 2.svg" alt="">
+                <img src="Avatar components/Brows/Brows_brows 2.svg" alt="">
+                <img src="Avatar components/Details/Details_mole 2.svg" alt="">
+                <img src="Avatar components/Mouth/Mouth_mouth 10.svg" alt="">
+                <img src="Avatar components/Nose/Nose_nose 5.svg" alt="">
+                <img src="Avatar components/Hair/Hair_bangs cover grey.svg" alt="" style="filter:brightness(2.4) saturate(0)">
+            </div>
+
+            <!-- 15: skin2 · eyes2 · brows1 · mouth1 · nose2 · pony grey -->
+            <div class="ants-avatar">
+                <img src="Avatar components/Skin/Skin_2_antcora.svg" alt="">
+                <img src="Avatar components/Eyes/Eyes_eyes 2.svg" alt="">
+                <img src="Avatar components/Brows/Brows_brows 1.svg" alt="">
+                <img src="Avatar components/Mouth/Mouth_mouth 1.svg" alt="">
+                <img src="Avatar components/Nose/Nose_nose 2.svg" alt="">
+                <img src="Avatar components/Hair/Hair_pony grey.svg" alt="">
+            </div>
+
+            <!-- 16: skin1 · eyes1 · brows8 · button earrings · mouth12 · nose4 · slick white · square sunglasses -->
+            <div class="ants-avatar">
+                <img src="Avatar components/Skin/Skin_1_antcora.svg" alt="">
+                <img src="Avatar components/Eyes/Eyes_eyes 1.svg" alt="">
+                <img src="Avatar components/Brows/Brows_brows 8.svg" alt="">
+                <img src="Avatar components/Earrings/Earrings_button earrings.svg" alt="">
+                <img src="Avatar components/Mouth/Mouth_mouth 12.svg" alt="">
+                <img src="Avatar components/Nose/Nose_nose 4.svg" alt="">
+                <img src="Avatar components/Hair/Hair_slick grey.svg" alt="" style="filter:brightness(2.4) saturate(0)">
+                <img src="Avatar components/Glasses/Glasses_square sunglasses.svg" alt="">
+            </div>
+
+            <!-- 17 (mobile only): skin3 · eyes2 · brows3 · mouth9 · nose6 · short french grey -->
+            <div class="ants-avatar ants-avatar--mobile-only">
+                <img src="Avatar components/Skin/Skin_3_antcora.svg" alt="">
+                <img src="Avatar components/Eyes/Eyes_eyes 2.svg" alt="">
+                <img src="Avatar components/Brows/Brows_brows 3.svg" alt="">
+                <img src="Avatar components/Mouth/Mouth_mouth 9.svg" alt="">
+                <img src="Avatar components/Nose/Nose_nose 6.svg" alt="">
+                <img src="Avatar components/Hair/Hair_short french grey.svg" alt="">
+            </div>
+
+            <!-- 18 (mobile only): skin5 · lashes1 · brows4 · button earrings · mouth3 · nose9 · side part grey · round sunglasses -->
+            <div class="ants-avatar ants-avatar--mobile-only">
+                <img src="Avatar components/Skin/Skin_5_antcora.svg" alt="">
+                <img src="Avatar components/Eyes/Eyes_lashes 1.svg" alt="">
+                <img src="Avatar components/Brows/Brows_brows 4.svg" alt="">
+                <img src="Avatar components/Earrings/Earrings_button earrings.svg" alt="">
+                <img src="Avatar components/Mouth/Mouth_mouth 3.svg" alt="">
+                <img src="Avatar components/Nose/Nose_nose 9.svg" alt="">
+                <img src="Avatar components/Hair/Hair_side part grey.svg" alt="">
+                <img src="Avatar components/Glasses/Glasses_round sunglasses.svg" alt="">
+            </div>
+
+        </div>
+        <p class="ants-desc">Ditch the boring profile pics. Meet ANTS, customizable avatars that actually match your energy. Whether you're bringing chill skater vibes or late-night coder chaos, tweak every little detail until your digital twin is 100% you.</p>
+    </section>
+
+    <section class="avatar-section">
+        <div class="avatar-card">
+            <div class="avatar-stack" id="avatar-stack">
+                <img class="avatar-layer" id="layer-skin"     src="" alt="">
+                <img class="avatar-layer" id="layer-eyes"     src="" alt="" style="display:none">
+                <img class="avatar-layer" id="layer-brows"    src="" alt="" style="display:none">
+                <img class="avatar-layer" id="layer-earrings" src="" alt="" style="display:none">
+                <img class="avatar-layer" id="layer-details"  src="" alt="" style="display:none">
+                <img class="avatar-layer" id="layer-mouth"    src="" alt="" style="display:none">
+                <img class="avatar-layer" id="layer-nose"     src="" alt="" style="display:none">
+                <img class="avatar-layer" id="layer-hair"     src="" alt="" style="display:none">
+                <img class="avatar-layer" id="layer-glasses"  src="" alt="" style="display:none">
+            </div>
+            <div class="avatar-customizer">
+                <div class="avatar-tabs" id="avatar-tabs"></div>
+                <div class="avatar-options-card">
+                    <div class="avatar-options-scroll" id="avatar-options-scroll">
+                        <div class="avatar-options-grid" id="avatar-options-grid"></div>
+                    </div>
+                    <div class="hair-color-bar" id="hair-color-bar" style="display:none"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="js/codi.js"></script>
+</body>
+</html>
