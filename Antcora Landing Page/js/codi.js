@@ -475,9 +475,11 @@ function makeOptStack(src, isHair) {
 function renderTabs() {
     tabsEl.innerHTML = '';
     AVATAR_CATEGORIES.forEach(cat => {
-        const btn = document.createElement('button');
+        const btn = document.createElement('div');
         btn.className = 'avatar-tab' + (cat === avatarState.activeTab ? ' active' : '');
         btn.textContent = cat;
+        btn.setAttribute('role', 'button');
+        btn.tabIndex = 0;
         btn.addEventListener('click', () => {
             avatarState.activeTab = cat;
             renderTabs();
@@ -495,9 +497,11 @@ function renderHairBar() {
     if (!isHair) return;
     bar.innerHTML = '';
     HAIR_COLORS.forEach(hc => {
-        const sw = document.createElement('button');
+        const sw = document.createElement('div');
         sw.className = 'hair-swatch' + (avatarState.hairColor.id === hc.id ? ' active' : '');
         sw.style.background = hc.swatch;
+        sw.setAttribute('role', 'button');
+        sw.tabIndex = 0;
         sw.addEventListener('click', () => {
             avatarState.hairColor = hc;
             bar.querySelectorAll('.hair-swatch').forEach(s => s.classList.remove('active'));
@@ -527,8 +531,10 @@ function renderGrid() {
 
     // "None" for optional non-skin tabs only
     if (cat !== 'Skin tone' && !MANDATORY_CATS.has(cat)) {
-        const nb = document.createElement('button');
+        const nb = document.createElement('div');
         nb.className = 'avatar-option none-option' + (cur === null ? ' selected' : '');
+        nb.setAttribute('role', 'button');
+        nb.tabIndex = 0;
         const skinImg = document.createElement('img');
         skinImg.src = currentSkin();
         skinImg.alt = '';
@@ -542,8 +548,10 @@ function renderGrid() {
     }
 
     opts.forEach(src => {
-        const btn = document.createElement('button');
+        const btn = document.createElement('div');
         btn.className = 'avatar-option' + (cur === src ? ' selected' : '');
+        btn.setAttribute('role', 'button');
+        btn.tabIndex = 0;
 
         if (cat === 'Skin tone') {
             const img = document.createElement('img');
