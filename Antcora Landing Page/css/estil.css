@@ -390,23 +390,33 @@ html, body {
         grid-row: 3;
     }
 
+    .avatar-section {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        padding: 0 7%;
+    }
+
     .avatar-card {
         flex-direction: column;
-        align-items: center;
+        align-items: stretch;
         padding: 24px;
-        gap: 24px;
+        gap: 0;
+        width: 100%;
+        min-height: calc(100vh - 64px);
     }
 
     .avatar-stack {
-        flex: none;
-        width: 60%;
-        max-width: 260px;
-        align-self: center;
+        width: 100%;
+        
     }
 
     .avatar-customizer {
+        flex: 0 0 auto;
         width: 100%;
-        max-width: 480px;
+        max-width: none;
+        justify-content: flex-end;
+        padding-top: 24px;
     }
 
     .avatar-options-scroll {
@@ -432,7 +442,10 @@ html, body {
 
 /* ── Avatar section ── */
 .avatar-section {
-    padding: 0 7% 80px;
+    padding: 0 7%;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
 }
 
 .avatar-card {
@@ -443,13 +456,16 @@ html, body {
     gap: 40px;
     align-items: center;
     box-shadow: 0 2px 20px rgba(0,0,0,0.06);
+    width: 100%;
+    min-height: calc(100vh - 64px);
 }
 
 .avatar-stack {
     position: relative;
     flex: 0 0 auto;
-    width: 42%;
+    width: 45%;
     aspect-ratio: 1;
+    pointer-events: none;
 }
 
 .avatar-layer {
@@ -467,6 +483,8 @@ html, body {
     display: flex;
     flex-direction: column;
     gap: 16px;
+    position: relative;
+    z-index: 1;
 }
 
 .avatar-tabs {
@@ -689,7 +707,7 @@ html, body {
     }
 
     .avatar-stack {
-        max-width: 200px;
+       width: 100%;
     }
 
     .avatar-customizer {
