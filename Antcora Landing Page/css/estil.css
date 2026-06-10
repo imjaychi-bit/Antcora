@@ -224,12 +224,12 @@ html, body {
 }
 
 .badge-item--left {
-    left: min(-2vw, calc(50vw - 550px));
+    left: calc(50vw - 720px);
     transform: translateY(-50%);
 }
 
 .badge-item--right {
-    right: min(-2vw, calc(50vw - 550px));
+    right: calc(50vw - 720px);
     transform: translateY(-50%);
 }
 
@@ -425,6 +425,19 @@ html, body {
 
     .avatar-tabs {
         justify-content: center;
+    }
+
+    .badge-viewer-wrap {
+        width: 320px;
+        height: 320px;
+    }
+
+    .badge-item--left {
+        left: calc(50% - 360px);
+    }
+
+    .badge-item--right {
+        right: calc(50% - 360px);
     }
 
     /* Cursor */
