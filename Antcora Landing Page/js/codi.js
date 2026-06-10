@@ -657,7 +657,7 @@ setTimeout(updateGridLayout, 0);
     const descEl  = section.querySelector('.badges-desc');
     const btnEl   = section.querySelector('.badges-content .btn-pill');
     const navEl   = document.querySelector('.nav-logo');
-    const navBtn  = document.querySelector('.nav .btn-pill');
+    const navBtn  = document.querySelector('.nav-btn');
 
     const CREAM       = [237, 232, 220];
     const DARK        = [30,  28,  26 ];

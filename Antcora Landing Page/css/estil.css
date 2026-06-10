@@ -6,9 +6,49 @@
 }
 
 :root {
-    --bg: #ede8dc;
-    --ink: #1e1c1a;
+    /* ── Colors ── */
+    --bg:   #ede8dc;
+    --ink:  #1e1c1a;
     --font: 'DM Sans', system-ui, sans-serif;
+
+    /* ── Type scale ── */
+    --text-h1-size:          clamp(48px, 6.5vw, 90px);
+    --text-h1-weight:        600;
+    --text-h1-lh:            1.05;
+    --text-h1-ls:            -0.03em;
+
+    --text-h2-size:          2.25rem;
+    --text-h2-weight:        600;
+    --text-h2-lh:            1.15;
+    --text-h2-ls:            -0.02em;
+
+    --text-h3-size:          1.5rem;
+    --text-h3-weight:        600;
+    --text-h3-lh:            1.25;
+    --text-h3-ls:            -0.01em;
+
+    --text-subtitle-size:    clamp(18px, 1.1vw, 24px);
+    --text-subtitle-weight:  600;
+    --text-subtitle-lh:      1.65;
+    --text-subtitle-ls:      -0.005em;
+
+    --text-body-size:        clamp(18px, 1.1vw, 24px);
+    --text-body-weight:      600;
+    --text-body-lh:          1.65;
+    --text-body-ls:          -0.005em;
+
+    --text-small-size:       14px;
+    --text-small-weight:     500;
+    --text-small-lh:         1.5;
+    --text-small-ls:         -0.01em;
+
+    --text-nav-size:         17px;
+    --text-nav-weight:       600;
+    --text-nav-ls:           -0.02em;
+
+    --text-btn-size:         15px;
+    --text-btn-weight:       500;
+    --text-btn-ls:           -0.01em;
 }
 
 html, body {
@@ -17,6 +57,30 @@ html, body {
     color: var(--ink);
     font-family: var(--font);
     -webkit-font-smoothing: antialiased;
+    font-size: var(--text-body-size);
+    line-height: var(--text-body-lh);
+    letter-spacing: var(--text-body-ls);
+}
+
+h1 {
+    font-size: var(--text-h1-size);
+    font-weight: var(--text-h1-weight);
+    line-height: var(--text-h1-lh);
+    letter-spacing: var(--text-h1-ls);
+}
+
+h2 {
+    font-size: var(--text-h2-size);
+    font-weight: var(--text-h2-weight);
+    line-height: var(--text-h2-lh);
+    letter-spacing: var(--text-h2-ls);
+}
+
+h3 {
+    font-size: var(--text-h3-size);
+    font-weight: var(--text-h3-weight);
+    line-height: var(--text-h3-lh);
+    letter-spacing: var(--text-h3-ls);
 }
 
 /* ── Cursor ── */
@@ -60,16 +124,18 @@ html, body {
 .nav-logo {
     display: flex;
     align-items: center;
-    gap: 8px;
-    font-size: 17px;
-    font-weight: 600;
-    letter-spacing: -0.02em;
 }
 
-.nav-icon {
-    width: 20px;
-    height: 20px;
-    flex-shrink: 0;
+.nav-logo-img {
+    position: fixed;
+    top: 9px;
+    left: 40px;
+    height: 60px;
+    width: auto;
+    z-index: 101;
+    pointer-events: none;
+    filter: brightness(0) invert(1);
+    mix-blend-mode: difference;
 }
 
 /* ── Button ── */
@@ -81,14 +147,24 @@ html, body {
     cursor: pointer;
     padding: 10px 22px;
     font-family: var(--font);
-    font-size: 15px;
-    font-weight: 500;
-    letter-spacing: -0.01em;
+    font-size: var(--text-btn-size);
+    font-weight: var(--text-btn-weight);
+    letter-spacing: var(--text-btn-ls);
 }
 
 .btn-pill--outline {
     background: var(--ink);
     color: var(--bg);
+}
+
+.nav-btn {
+    position: fixed;
+    top: 20px;
+    right: 40px;
+    z-index: 101;
+    background: #ffffff !important;
+    color: #000000 !important;
+    mix-blend-mode: difference;
 }
 
 /* ── Hero ── */
@@ -121,19 +197,19 @@ html, body {
 }
 
 .hero-title {
-    font-size: clamp(48px, 6.5vw, 90px);
-    font-weight: 600;
-    line-height: 1.05;
-    letter-spacing: -0.03em;
+    font-size: var(--text-h1-size);
+    font-weight: var(--text-h1-weight);
+    line-height: var(--text-h1-lh);
+    letter-spacing: var(--text-h1-ls);
     margin-bottom: 28px;
     
 }
 
 .hero-subtitle {
-    font-size: clamp(14px, 1.1vw, 16px);
-    font-weight: 500;
-    line-height: 1.65;
-    letter-spacing: -0.005em;
+    font-size: var(--text-subtitle-size);
+    font-weight: var(--text-subtitle-weight);
+    line-height: var(--text-subtitle-lh);
+    letter-spacing: var(--text-subtitle-ls);
     color: #4a4540;
     margin-bottom: 32px;
 }
@@ -193,6 +269,100 @@ html, body {
 @keyframes dotLeave {
     from { transform: scale(1); opacity: 1; }
     to   { transform: scale(0); opacity: 0; }
+}
+
+/* ── Notifications section ── */
+.notif-section {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 100px 7%;
+    gap: 60px;
+    user-select: none;
+}
+
+.notif-visual {
+    flex: 1;
+    order: 2;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 320px;
+}
+
+.notif-glow {
+    position: absolute;
+    width: 640px;
+    height: 280px;
+    background: radial-gradient(ellipse at center, rgba(148, 140, 124, 0.45) 0%, transparent 68%);
+    filter: blur(60px);
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+.notif-cards {
+    position: relative;
+    width: clamp(320px, 52vw, 720px);
+    height: clamp(200px, 26vw, 380px);
+}
+
+.notif-slot {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: notifPop 10s ease-in-out infinite;
+    animation-fill-mode: backwards;
+}
+
+.notif-slot:last-child {
+    animation-delay: 5s;
+}
+
+.notif-img--iphone {
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+}
+
+.notif-img--watch {
+    width: clamp(140px, 18vw, 260px);
+    height: auto;
+}
+
+@keyframes notifPop {
+    0%   { opacity: 0; transform: translateY(18px) scale(0.90); animation-timing-function: cubic-bezier(0.34, 1.4, 0.64, 1); }
+    5%   { opacity: 1; transform: translateY(0)    scale(1);    animation-timing-function: ease-in-out; }
+    40%  { opacity: 1; transform: translateY(0)    scale(1);    animation-timing-function: ease-in; }
+    47%  { opacity: 0; transform: translateY(-12px) scale(0.96); }
+    100% { opacity: 0; transform: translateY(18px)  scale(0.90); }
+}
+
+.notif-content {
+    order: 1;
+    flex: 0 0 auto;
+    max-width: 480px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.notif-title {
+    font-size: var(--text-h2-size);
+    font-weight: var(--text-h2-weight);
+    line-height: var(--text-h2-lh);
+    letter-spacing: var(--text-h2-ls);
+}
+
+.notif-desc {
+    font-size: var(--text-body-size);
+    font-weight: var(--text-body-weight);
+    line-height: var(--text-body-lh);
+    letter-spacing: var(--text-body-ls);
+    color: #4a4540;
 }
 
 /* ── Badges section ── */
@@ -295,7 +465,7 @@ html, body {
 .badges-content {
     position: relative;
     z-index: 1;
-    max-width: 420px;
+    max-width: 620px;
     padding: 0 24px;
     display: flex;
     flex-direction: column;
@@ -304,17 +474,17 @@ html, body {
 }
 
 .badges-title {
-    font-size: clamp(32px, 4vw, 58px);
-    font-weight: 700;
-    letter-spacing: -0.03em;
+    font-size: var(--text-h2-size);
+    font-weight: var(--text-h2-weight);
+    letter-spacing: var(--text-h2-ls);
     color: var(--ink);
 }
 
 .badges-desc {
-    font-size: clamp(13px, 1.1vw, 15px);
-    font-weight: 400;
-    line-height: 1.7;
-    letter-spacing: -0.005em;
+    font-size: var(--text-body-size);
+    font-weight: var(--text-body-weight);
+    line-height: var(--text-body-lh);
+    letter-spacing: var(--text-body-ls);
     color: #4a4540;
 }
 
@@ -379,10 +549,10 @@ html, body {
     max-width: 620px;
     margin: 52px auto 0;
     text-align: center;
-    font-size: clamp(13px, 1.1vw, 15px);
-    font-weight: 400;
-    line-height: 1.65;
-    letter-spacing: -0.005em;
+    font-size: var(--text-body-size);
+    font-weight: var(--text-body-weight);
+    line-height: var(--text-body-lh);
+    letter-spacing: var(--text-body-ls);
     color: #4a4540;
 }
 
@@ -470,6 +640,36 @@ html, body {
         animation: goldSilverLoop 7.2s linear infinite;
     }
 
+    .notif-section {
+        flex-direction: column;
+        padding: 80px 7% 60px;
+        gap: 32px;
+    }
+
+    .notif-visual {
+        order: 1;
+        width: 100%;
+    }
+
+    .notif-content {
+        order: 2;
+        max-width: 100%;
+    }
+
+    .notif-cards {
+        width: clamp(280px, 80vw, 560px);
+        height: clamp(160px, 40vw, 300px);
+    }
+
+    .notif-img--watch {
+        width: clamp(110px, 22vw, 200px);
+    }
+
+    .notif-glow {
+        width: 80%;
+        height: 200px;
+    }
+
     /* Cursor */
     *, *::before, *::after { cursor: auto; }
     #custom-cursor { display: none; }
@@ -542,10 +742,10 @@ html, body {
     border: 1.5px solid var(--ink);
     background: transparent;
     font-family: var(--font);
-    font-size: 14px;
-    font-weight: 500;
+    font-size: var(--text-small-size);
+    font-weight: var(--text-small-weight);
     color: var(--ink);
-    letter-spacing: -0.01em;
+    letter-spacing: var(--text-small-ls);
     white-space: nowrap;
     cursor: pointer;
 }
@@ -695,8 +895,8 @@ html, body {
     grid-column: 1 / -1;
     width: 100%;
     color: #b0aba4;
-    font-size: 14px;
-    font-weight: 500;
+    font-size: var(--text-small-size);
+    font-weight: var(--text-small-weight);
     white-space: nowrap;
     padding: 0 16px;
 }
