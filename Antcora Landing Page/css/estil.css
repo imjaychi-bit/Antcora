@@ -129,7 +129,7 @@ h3 {
 .nav-logo-img {
     position: fixed;
     top: 9px;
-    left: 40px;
+    left: 4%;
     height: 60px;
     width: auto;
     z-index: 101;
@@ -160,7 +160,7 @@ h3 {
 .nav-btn {
     position: fixed;
     top: 20px;
-    right: 40px;
+    right: 4%;
     z-index: 101;
     background: #ffffff !important;
     color: #000000 !important;
