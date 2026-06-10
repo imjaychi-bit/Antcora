@@ -34,7 +34,7 @@
 
     --text-body-size:        clamp(18px, 1.1vw, 24px);
     --text-body-weight:      600;
-    --text-body-lh:          1.65;
+    --text-body-lh:          1.5;
     --text-body-ls:          -0.005em;
 
     --text-small-size:       14px;
@@ -275,11 +275,21 @@ h3 {
 .notif-section {
     min-height: 100vh;
     display: flex;
-    flex-direction: row;
     align-items: center;
     padding: 100px 7%;
-    gap: 60px;
     user-select: none;
+}
+
+.notif-card {
+    background: #fff;
+    border-radius: 22px;
+    padding: 40px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 60px;
+    box-shadow: 0 2px 20px rgba(0,0,0,0.06);
+    width: 100%;
 }
 
 .notif-visual {
@@ -557,6 +567,10 @@ h3 {
 }
 
 @media (max-width: 1024px) {
+    h1, h2, h3, p { text-align: left; }
+
+    .badges-content { align-items: flex-start; max-width: 100%; padding: 0 7%; }
+
     .ants-avatar--mobile-only { display: block; }
 
     .ants-grid {
@@ -641,9 +655,13 @@ h3 {
     }
 
     .notif-section {
+        padding: 32px 7%;
+    }
+
+    .notif-card {
         flex-direction: column;
-        padding: 80px 7% 60px;
-        gap: 32px;
+        gap: 24px;
+        padding: 24px;
     }
 
     .notif-visual {
