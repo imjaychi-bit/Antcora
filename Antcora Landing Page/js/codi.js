@@ -799,44 +799,73 @@ if (communityBurst) {
     if (!track || !dotsWrap || !carousel) return;
 
     const dots = Array.from(dotsWrap.querySelectorAll('.notif-dot'));
-    const REAL = dots.length;   // 3 cards reales
-    let current = 0;
+    const REAL = dots.length;
 
-    // Clonar la primera card al final para el bucle infinito
-    track.appendChild(track.firstElementChild.cloneNode(true));
+    // DOM: [cloneLast, card1, card2, card3, cloneFirst]
+    track.insertBefore(track.lastElementChild.cloneNode(true), track.firstElementChild);
+    track.appendChild(track.children[1].cloneNode(true));
 
-    function cw()  { return track.firstElementChild.offsetWidth; }
+    // pos: DOM index — real cards at 1…REAL, clones at 0 and REAL+1
+    let pos = 1;
+    let busy = false;
+
+    function cw()  { return track.children[1].offsetWidth; }
     function gap() { return parseInt(getComputedStyle(track).gap) || 20; }
 
     function setDots(i) {
-        dots.forEach((d, j) => d.classList.toggle('notif-dot--active', j === i % REAL));
+        dots.forEach((d, j) => d.classList.toggle('notif-dot--active', j === i));
     }
 
-    function goTo(i, silent = false) {
+    function moveTo(p, silent = false) {
         if (silent) track.style.transition = 'none';
-        track.style.transform = `translateX(${-i * (cw() + gap())}px)`;
+        track.style.transform = `translateX(${-p * (cw() + gap())}px)`;
         if (silent) { track.offsetHeight; track.style.transition = ''; }
-        current = i % REAL;
-        setDots(current);
     }
+
+    // Inicializar en la primera card real sin animación
+    moveTo(1, true);
+    setDots(0);
 
     function advance() {
-        if (current === REAL - 1) {
-            // Animar hasta el clon (índice REAL) y luego saltar en silencio a 0
-            track.style.transform = `translateX(${-REAL * (cw() + gap())}px)`;
-            setDots(0);
-            current = 0;
-            track.addEventListener('transitionend', () => goTo(0, true), { once: true });
+        if (busy) return;
+        busy = true;
+        pos++;
+        moveTo(pos);
+        setDots(pos > REAL ? 0 : pos - 1);
+        if (pos > REAL) {
+            track.addEventListener('transitionend', () => {
+                pos = 1;
+                moveTo(1, true);
+                busy = false;
+            }, { once: true });
         } else {
-            goTo(current + 1);
+            track.addEventListener('transitionend', () => { busy = false; }, { once: true });
         }
     }
 
     function retreat() {
-        if (current > 0) goTo(current - 1);
+        if (busy) return;
+        busy = true;
+        pos--;
+        moveTo(pos);
+        setDots(pos < 1 ? REAL - 1 : pos - 1);
+        if (pos < 1) {
+            track.addEventListener('transitionend', () => {
+                pos = REAL;
+                moveTo(REAL, true);
+                busy = false;
+            }, { once: true });
+        } else {
+            track.addEventListener('transitionend', () => { busy = false; }, { once: true });
+        }
     }
 
-    dots.forEach(dot => dot.addEventListener('click', () => goTo(Number(dot.dataset.index))));
+    dots.forEach((dot, i) => dot.addEventListener('click', () => {
+        if (busy) return;
+        pos = i + 1;
+        moveTo(pos);
+        setDots(i);
+    }));
 
     carousel.addEventListener('click', e => {
         const x = e.clientX - carousel.getBoundingClientRect().left;
