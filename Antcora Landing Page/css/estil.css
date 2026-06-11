@@ -834,9 +834,9 @@ h3 {
 .community-dot--1 { width: 18px; height: 18px; --tx:    4px; --ty: -215px; }
 .community-dot--2 { width: 22px; height: 22px; --tx: -252px; --ty:  -55px; }
 .community-dot--3 { width: 17px; height: 17px; --tx:  257px; --ty:  -92px; }
-.community-dot--4 { width: 24px; height: 24px; --tx: -182px; --ty:  148px; }
+.community-dot--4 { width: 24px; height: 24px; --tx: -192px; --ty:  118px; }
 .community-dot--5 { width: 16px; height: 16px; --tx:  238px; --ty:  130px; }
-.community-dot--6 { width: 20px; height: 20px; --tx:   58px; --ty:  202px; }
+.community-dot--6 { width: 20px; height: 20px; --tx:   18px; --ty:  202px; }
 .community-dot--7 { width: 14px; height: 14px; --tx: -212px; --ty: -130px; }
 
 /* burst animation — triggered when .is-visible added by IntersectionObserver */
@@ -1332,6 +1332,256 @@ h3 {
     .community-dot--5 { --tx:  148px; --ty:   82px; }
     .community-dot--6 { --tx:   35px; --ty:  128px; }
     .community-dot--7 { --tx: -133px; --ty:  -82px; }
+}
+
+/* ── Experience cards section ───────────────────────────── */
+.xp-section {
+    padding: 100px 7%;
+    display: flex;
+    flex-direction: column;
+    gap: 56px;
+}
+
+.xp-header {
+    max-width: 620px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.xp-section-title {
+    font-size: var(--text-h2-size);
+    font-weight: var(--text-h2-weight);
+    letter-spacing: var(--text-h2-ls);
+    line-height: var(--text-h2-lh);
+    color: var(--ink);
+}
+
+.xp-section-desc {
+    font-size: var(--text-body-size);
+    font-weight: var(--text-body-weight);
+    line-height: var(--text-body-lh);
+    letter-spacing: var(--text-body-ls);
+    color: #4a4540;
+}
+
+.xp-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    align-items: start;
+}
+
+/* Stagger: even cards drop for organic rhythm */
+.xp-scene:nth-child(even) { margin-top: 64px; }
+
+/* Scene + card flip */
+.xp-scene {
+    perspective: 1400px;
+}
+
+.xp-card {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 3 / 4.3;
+    transform-style: preserve-3d;
+    transition: transform 0.72s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+}
+
+.xp-card.is-flipped {
+    transform: rotateY(180deg);
+}
+
+/* Faces */
+.xp-face {
+    position: absolute;
+    inset: 0;
+    border-radius: 20px;
+    background: #e0ddd7;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+}
+
+/* ── Front face ── */
+.xp-face--front {
+    display: flex;
+    flex-direction: column;
+    padding: 8px 8px 0;
+    overflow: hidden;
+}
+
+.xp-views {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    font-size: var(--text-small-size);
+    font-weight: var(--text-small-weight);
+    letter-spacing: var(--text-small-ls);
+    color: var(--ink);
+    z-index: 2;
+}
+
+.xp-photo {
+    flex: 1;
+    border-radius: 14px;
+    position: relative;
+    min-height: 0;
+    overflow: hidden;
+}
+
+.xp-photo--1 { background: #c2bfb9; }
+.xp-photo--2 { background: #bcc4c2; }
+.xp-photo--3 { background: #c8bfbb; }
+.xp-photo--4 { background: #c4beba; }
+.xp-photo--5 { background: #bfc3be; }
+.xp-photo--6 { background: #b8bcc4; }
+.xp-photo--7 { background: #c0c4be; }
+.xp-photo--8 { background: #c6c2bc; }
+
+.xp-avatar-badge {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    width: 44px;
+    height: 44px;
+}
+
+.xp-avatar-badge img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.xp-meta {
+    padding: 16px 14px 18px;
+    position: relative;
+}
+
+.xp-title {
+    font-size: var(--text-h3-size);
+    font-weight: var(--text-h3-weight);
+    letter-spacing: var(--text-h3-ls);
+    line-height: var(--text-h3-lh);
+    color: var(--ink);
+}
+
+.xp-date {
+    font-size: var(--text-small-size);
+    font-weight: var(--text-small-weight);
+    letter-spacing: var(--text-small-ls);
+    color: #7a7470;
+    margin-top: 6px;
+}
+
+/* Arrows */
+.xp-arrow {
+    background: none;
+    border: none;
+    padding: 0;
+    font-family: var(--font);
+    font-size: 26px;
+    font-weight: 500;
+    color: var(--ink);
+    line-height: 1;
+    cursor: pointer;
+}
+
+.xp-arrow--fwd {
+    position: absolute;
+    bottom: 18px;
+    right: 14px;
+}
+
+/* ── Back face ── */
+.xp-face--back {
+    transform: rotateY(180deg);
+    display: flex;
+    flex-direction: column;
+    padding: 28px 24px 24px;
+    overflow: hidden;
+}
+
+.xp-back-scroll {
+    flex: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.xp-back-scroll::-webkit-scrollbar { display: none; }
+
+.xp-back-title {
+    font-size: var(--text-h3-size);
+    font-weight: var(--text-h3-weight);
+    letter-spacing: var(--text-h3-ls);
+    line-height: var(--text-h3-lh);
+    color: var(--ink);
+}
+
+.xp-back-place {
+    font-size: var(--text-small-size);
+    font-weight: 600;
+    letter-spacing: var(--text-small-ls);
+    color: var(--ink);
+}
+
+.xp-back-body {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-top: 8px;
+}
+
+.xp-back-body p {
+    font-size: var(--text-small-size);
+    font-weight: 400;
+    line-height: 1.65;
+    letter-spacing: 0;
+    color: #6e6a64;
+}
+
+.xp-back-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 16px;
+    flex-shrink: 0;
+}
+
+.xp-author {
+    font-size: var(--text-small-size);
+    font-weight: var(--text-small-weight);
+    letter-spacing: var(--text-small-ls);
+    color: #7a7470;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .xp-row { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    .xp-scene:nth-child(even) { margin-top: 48px; }
+    .xp-scene:nth-child(n+7) { display: none; }
+}
+
+@media (max-width: 560px) {
+    .xp-section {
+        padding: 48px 7% 64px;
+        gap: 32px;
+        min-height: 100svh;
+        justify-content: center;
+    }
+    .xp-row {
+        grid-template-columns: 1fr;
+    }
+    .xp-scene:nth-child(even) { margin-top: 0; }
+    .xp-scene:nth-child(n+4) { display: none; }
+    /* Stack layout handled by GSAP */
+    .xp-scene { will-change: transform; }
 }
 
 /* ── Footer ─────────────────────────────────────────────── */

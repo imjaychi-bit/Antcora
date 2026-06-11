@@ -1090,3 +1090,107 @@ if (communityBurst) {
     }
     requestAnimationFrame(tick);
 })();
+
+// ── Experience card flip ────────────────────────────────────
+document.querySelectorAll('.xp-card').forEach(card => {
+    card.addEventListener('click', () => card.classList.toggle('is-flipped'));
+});
+
+// ── Mobile experience card stack (GSAP ScrollTrigger) ────────
+(() => {
+    if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
+    gsap.registerPlugin(ScrollTrigger);
+
+    const mm = gsap.matchMedia();
+
+    mm.add('(max-width: 560px)', () => {
+        const section = document.querySelector('.xp-section');
+        const row     = section && section.querySelector('.xp-row');
+        if (!section || !row) return;
+
+        const scenes = [...row.querySelectorAll('.xp-scene')].slice(0, 3);
+        const N = scenes.length;
+        if (N < 2) return;
+
+        const PEEK   = 18;   // px each card peeks below the one in front
+        const SCALE  = 0.05; // scale reduction per depth level
+
+        // Card height derived from its rendered width
+        const cardH = () => scenes[0].offsetWidth * (4.3 / 3);
+
+        function buildStack() {
+            gsap.set(row, {
+                position: 'relative',
+                height: cardH() + (N - 1) * PEEK,
+                overflow: 'visible',
+            });
+            scenes.forEach((scene, i) => {
+                gsap.set(scene, {
+                    position: 'absolute',
+                    width: '100%',
+                    top: 0,
+                    zIndex: N - i,
+                    scale: 1 - i * SCALE,
+                    y: i * PEEK,
+                    transformOrigin: 'center top',
+                });
+                const card = scene.querySelector('.xp-card');
+                if (card) card.style.pointerEvents = i === 0 ? 'auto' : 'none';
+            });
+        }
+
+        buildStack();
+
+        // Timeline: each segment = one card exits, rest move forward
+        const tl = gsap.timeline();
+        for (let i = 0; i < N - 1; i++) {
+            tl.to(scenes[i], {
+                y: '-115%', scale: 1 - SCALE, opacity: 0,
+                duration: 1, ease: 'power2.inOut',
+            }, i);
+            for (let j = i + 1; j < N; j++) {
+                const depth = j - i - 1;
+                tl.to(scenes[j], {
+                    y: depth * PEEK, scale: 1 - depth * SCALE,
+                    duration: 1, ease: 'power2.inOut',
+                }, i);
+            }
+        }
+
+        // ScrollTrigger pin + scrub + snap
+        const st = ScrollTrigger.create({
+            trigger: row,
+            pin: true,
+            pinSpacing: true,
+            start: 'center center',
+            end: `+=${window.innerHeight * (N - 1)}`,
+            scrub: 0.7,
+            snap: {
+                snapTo: 1 / (N - 1),
+                duration: { min: 0.3, max: 0.55 },
+                ease: 'power2.inOut',
+                delay: 0.05,
+            },
+            animation: tl,
+            onUpdate(self) {
+                const active = Math.round(self.progress * (N - 1));
+                scenes.forEach((scene, i) => {
+                    const card = scene.querySelector('.xp-card');
+                    if (card) card.style.pointerEvents = i === active ? 'auto' : 'none';
+                });
+            },
+        });
+
+        // Cleanup when leaving mobile breakpoint
+        return () => {
+            st.kill();
+            tl.kill();
+            gsap.set(row, { clearProps: 'all' });
+            scenes.forEach(scene => {
+                gsap.set(scene, { clearProps: 'all' });
+                const card = scene.querySelector('.xp-card');
+                if (card) card.style.pointerEvents = '';
+            });
+        };
+    });
+})();
