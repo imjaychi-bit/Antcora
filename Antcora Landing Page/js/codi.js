@@ -798,21 +798,22 @@ if (communityBurst) {
     const carousel = document.getElementById('notif-carousel');
     if (!track || !dotsWrap || !carousel) return;
 
-    const dots = Array.from(dotsWrap.querySelectorAll('.notif-dot'));
-    const REAL = dots.length;
+    const dots  = Array.from(dotsWrap.querySelectorAll('.notif-dot'));
+    const REAL  = dots.length;
+    const MS    = 520; // must match CSS transition duration
 
-    // DOM: [cloneLast, card1, card2, card3, cloneFirst]
     // Strip IDs from clones to avoid duplicates (e.g. earth-canvas)
     function cloneStripped(el) {
         const c = el.cloneNode(true);
         c.querySelectorAll('[id]').forEach(n => n.removeAttribute('id'));
         return c;
     }
+
+    // DOM: [cloneLast, card1, card2, card3, cloneFirst]
     track.insertBefore(cloneStripped(track.lastElementChild), track.firstElementChild);
     track.appendChild(cloneStripped(track.children[1]));
 
-    // pos: DOM index — real cards at 1…REAL, clones at 0 and REAL+1
-    let pos = 1;
+    let pos  = 1;   // DOM index — real cards at 1…REAL
     let busy = false;
 
     function cw()  { return track.children[1].offsetWidth; }
@@ -828,7 +829,6 @@ if (communityBurst) {
         if (silent) { track.offsetHeight; track.style.transition = ''; }
     }
 
-    // Inicializar en la primera card real sin animación
     moveTo(1, true);
     setDots(0);
 
@@ -838,15 +838,10 @@ if (communityBurst) {
         pos++;
         moveTo(pos);
         setDots(pos > REAL ? 0 : pos - 1);
-        if (pos > REAL) {
-            track.addEventListener('transitionend', () => {
-                pos = 1;
-                moveTo(1, true);
-                busy = false;
-            }, { once: true });
-        } else {
-            track.addEventListener('transitionend', () => { busy = false; }, { once: true });
-        }
+        setTimeout(() => {
+            if (pos > REAL) { pos = 1; moveTo(1, true); }
+            busy = false;
+        }, MS);
     }
 
     function retreat() {
@@ -855,37 +850,29 @@ if (communityBurst) {
         pos--;
         moveTo(pos);
         setDots(pos < 1 ? REAL - 1 : pos - 1);
-        if (pos < 1) {
-            track.addEventListener('transitionend', () => {
-                pos = REAL;
-                moveTo(REAL, true);
-                busy = false;
-            }, { once: true });
-        } else {
-            track.addEventListener('transitionend', () => { busy = false; }, { once: true });
-        }
+        setTimeout(() => {
+            if (pos < 1) { pos = REAL; moveTo(REAL, true); }
+            busy = false;
+        }, MS);
     }
 
     dots.forEach((dot, i) => dot.addEventListener('click', () => {
         if (busy) return;
-        pos = i + 1;
-        moveTo(pos);
-        setDots(i);
+        pos = i + 1; moveTo(pos); setDots(i);
     }));
 
-    carousel.addEventListener('click', e => {
-        const x = e.clientX - carousel.getBoundingClientRect().left;
-        if (x > cw() + gap()) advance();
-        if (x < 0) retreat();
-    });
-
-    let touchX = 0;
-    track.addEventListener('touchstart', e => { touchX = e.touches[0].clientX; }, { passive: true });
-    track.addEventListener('touchend', e => {
-        const diff = touchX - e.changedTouches[0].clientX;
+    // Swipe: pointer events cover both mouse drag and touch
+    let startX = null;
+    carousel.addEventListener('pointerdown', e => { startX = e.clientX; });
+    carousel.addEventListener('pointermove', e => { if (startX !== null) e.preventDefault(); }, { passive: false });
+    carousel.addEventListener('pointerup', e => {
+        if (startX === null) return;
+        const diff = startX - e.clientX;
+        startX = null;
         if (Math.abs(diff) < 40) return;
         diff > 0 ? advance() : retreat();
     });
+    carousel.addEventListener('pointercancel', () => { startX = null; });
 })();
 
 // ── Reading Radius animation ────────────────────────────────────
