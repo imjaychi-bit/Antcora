@@ -432,21 +432,25 @@ function currentSkin() {
 }
 
 function setLayer(cat, src) {
-    const el = document.getElementById(LAYER_IDS[cat]);
-    if (!el) return;
-    if (src) {
-        el.src = src;
-        el.style.display = '';
-        if (cat === 'Hair') el.style.filter = avatarState.hairColor.filter;
-    } else {
-        el.src = '';
-        el.style.display = 'none';
-    }
+    const id = LAYER_IDS[cat];
+    [document.getElementById(id), document.getElementById('c' + id)].forEach(el => {
+        if (!el) return;
+        if (src) {
+            el.src = src;
+            el.style.display = '';
+            if (cat === 'Hair') el.style.filter = avatarState.hairColor.filter;
+        } else {
+            el.src = '';
+            el.style.display = 'none';
+        }
+    });
 }
 
 function applyHairColor() {
-    const el = document.getElementById('layer-hair');
-    if (el && avatarState.sel['Hair']) el.style.filter = avatarState.hairColor.filter;
+    ['layer-hair', 'clayer-hair'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el && avatarState.sel['Hair']) el.style.filter = avatarState.hairColor.filter;
+    });
     document.querySelectorAll('.opt-hair').forEach(img => {
         img.style.filter = avatarState.hairColor.filter;
     });
@@ -589,6 +593,17 @@ AVATAR_CATEGORIES.forEach(cat => setLayer(cat, avatarState.sel[cat]));
 renderTabs();
 renderGrid();
 setTimeout(updateGridLayout, 0);
+
+// Community burst — fires once when section enters viewport
+const communityBurst = document.getElementById('community-burst');
+if (communityBurst) {
+    new IntersectionObserver(([entry], obs) => {
+        if (entry.isIntersecting) {
+            communityBurst.classList.add('is-visible');
+            obs.disconnect();
+        }
+    }, { threshold: 0.25 }).observe(communityBurst);
+}
 
 // ── ANTS showcase — per-avatar random layer mutations ──────────
 (function () {
