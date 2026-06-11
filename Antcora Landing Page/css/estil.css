@@ -1323,15 +1323,83 @@ h3 {
     .community-bg-av--3 { --tx: -138px; --ty:   8px; }
     .community-bg-av--4 { --tx:  136px; --ty:  14px; }
     .community-bg-av--5 { --tx:  -73px; --ty:  98px; }
-    .community-bg-av--6 { --tx:   68px; --ty:  92px; }
+    .community-bg-av--6 { --tx:   88px; --ty:  92px; }
 
     .community-dot--1 { --tx:   3px; --ty: -140px; }
     .community-dot--2 { --tx: -160px; --ty:  -35px; }
     .community-dot--3 { --tx:  162px; --ty:  -60px; }
-    .community-dot--4 { --tx: -115px; --ty:   92px; }
+    .community-dot--4 { --tx: -135px; --ty:   92px; }
     .community-dot--5 { --tx:  148px; --ty:   82px; }
-    .community-dot--6 { --tx:   35px; --ty:  128px; }
+    .community-dot--6 { --tx:   10px; --ty:  138px; }
     .community-dot--7 { --tx: -133px; --ty:  -82px; }
+}
+
+/* ── Reveal story section ───────────────────────────────── */
+.reveal-section {
+    position: relative;
+    height: 100svh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.reveal-blob {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100vmax;
+    height: 100vmax;
+    border-radius: 50%;
+    background: var(--ink);
+    pointer-events: none;
+    z-index: 1;
+    /* GSAP owns transform: xPercent -50 yPercent -50 scale 0.012 */
+}
+
+.reveal-quote {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: min(78vw, 620px);
+    text-align: center;
+    color: #f0ede6;
+    z-index: 2;
+    pointer-events: none;
+    font-size: clamp(15px, 3.4vw, 21px);
+    font-style: italic;
+    line-height: 1.6;
+    font-weight: 400;
+    /* GSAP owns transform + opacity */
+}
+
+.reveal-quote-date {
+    margin-top: 10px;
+    font-size: var(--text-small-size);
+    font-style: normal;
+    letter-spacing: var(--text-small-ls);
+    opacity: 0.65;
+}
+
+.reveal-card-wrap {
+    position: relative;
+    z-index: 3;
+    width: calc((86vw - 42px) / 4); /* matches one desktop grid column */
+}
+
+@media (max-width: 1024px) {
+    .reveal-card-wrap { width: calc((86vw - 12px) / 2); }
+}
+
+@media (max-width: 560px) {
+    .reveal-card-wrap { width: 86vw; }
+}
+
+.reveal-card-wrap .xp-scene {
+    width: 100%;
+}
+
+.xp-photo--reveal {
+    background: linear-gradient(145deg, #141424 0%, #1c2e40 55%, #2a4a6e 100%);
 }
 
 /* ── Experience cards section ───────────────────────────── */

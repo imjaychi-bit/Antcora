@@ -1096,6 +1096,90 @@ document.querySelectorAll('.xp-card').forEach(card => {
     card.addEventListener('click', () => card.classList.toggle('is-flipped'));
 });
 
+// ── Reveal story section (GSAP ScrollTrigger) ────────────────
+(() => {
+    if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
+
+    const section   = document.querySelector('.reveal-section');
+    if (!section) return;
+
+    const blob      = section.querySelector('.reveal-blob');
+    const quote     = section.querySelector('.reveal-quote');
+    const cardWrap  = section.querySelector('.reveal-card-wrap');
+    const card      = cardWrap?.querySelector('.xp-card');
+    const faceFront = cardWrap?.querySelector('.xp-face--front');
+    const xpPhoto   = cardWrap?.querySelector('.xp-photo');
+    const xpArrow   = cardWrap?.querySelector('.xp-arrow--fwd');
+    const xpMeta    = cardWrap?.querySelector('.xp-meta');
+
+    // — Blob + quote initial state —
+    gsap.set(blob,  { xPercent: -50, yPercent: -50, scale: 0.012 });
+    gsap.set(quote, { xPercent: -50, yPercent: -50, opacity: 0 });
+
+    // — Card initial state: only title + date visible, no background, no photo, no arrow —
+    if (faceFront) gsap.set(faceFront, { backgroundColor: 'transparent' });
+    if (xpPhoto)   gsap.set(xpPhoto,   { opacity: 0 });
+    if (xpArrow)   gsap.set(xpArrow,   { opacity: 0 });
+    if (card)      card.style.pointerEvents = 'none';
+
+    // Shift cardWrap up so the meta (title+date) lands at vertical centre of viewport
+    const cardH  = cardWrap?.offsetHeight ?? 430;
+    const metaH  = xpMeta?.offsetHeight   ?? 90;
+    const yShift = -((cardH - metaH) / 2);
+    gsap.set(cardWrap, { opacity: 0, scale: 0.88, y: yShift });
+
+    const vmax      = Math.max(window.innerWidth, window.innerHeight);
+    const cover     = Math.hypot(window.innerWidth, window.innerHeight) / vmax + 0.08;
+    const blobScale = (cardWrap?.offsetWidth ?? 280) / vmax * 1.1;
+
+    const tl = gsap.timeline();
+    tl
+        // Phase 1 · dot → full black screen
+        .to(blob,      { scale: cover,     duration: 1,    ease: 'power2.inOut' }, 0)
+        // Phase 2 · quote appears in black
+        .to(quote,     { opacity: 1,        duration: 0.4,  ease: 'power2.out'  }, 0.75)
+        // Phase 3 · quote fades out
+        .to(quote,     { opacity: 0,        duration: 0.35 }, 1.55)
+        // Phase 4 · black screen shrinks to card-dot
+        .to(blob,      { scale: blobScale,  duration: 1.1,  ease: 'power2.inOut' }, 1.9)
+        // Phase 5 · title + date appear centred (no background), blob fades out
+        .to(cardWrap,  { opacity: 1, scale: 1, duration: 0.4, ease: 'power2.out' }, 2.7)
+        .to(blob,      { opacity: 0,        duration: 0.3,  ease: 'power1.in'   }, 2.75)
+        // Phase 6 · card background forms + card slides to natural centre position
+        .to(faceFront, { backgroundColor: '#e0ddd7', duration: 0.55, ease: 'power2.inOut' }, 3.2)
+        .to(cardWrap,  { y: 0,             duration: 0.55, ease: 'power2.inOut' }, 3.2)
+        // Phase 7 · photo fades in from above
+        .to(xpPhoto,   { opacity: 1,        duration: 0.4,  ease: 'power2.out'  }, 3.5)
+        // Phase 8 · arrow appears — card fully formed
+        .to(xpArrow,   { opacity: 1,        duration: 0.25, ease: 'power2.out'  }, 3.75)
+        // Phase 9 · dwell so card is readable before flip
+        .to({},        { duration: 0.7 });
+    // total tl duration ≈ 4.7
+
+    ScrollTrigger.create({
+        trigger: section,
+        pin: true,
+        pinSpacing: true,
+        start: 'top top',
+        end: `+=${window.innerHeight * 5.5}`,
+        scrub: 1.2,
+        animation: tl,
+        onUpdate(self) {
+            if (!card) return;
+            // Card is only interactive once fully formed (≥ 90 %)
+            const formed = self.progress >= 0.90;
+            card.style.pointerEvents = formed ? 'auto' : 'none';
+            // Scroll drives the flip only while card is still forming
+            if (!formed) {
+                const shouldFlip = self.progress >= 0.88;
+                if (shouldFlip !== card.classList.contains('is-flipped')) {
+                    card.classList.toggle('is-flipped');
+                }
+            }
+        },
+    });
+})();
+
 // ── Mobile experience card stack (GSAP ScrollTrigger) ────────
 (() => {
     if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
