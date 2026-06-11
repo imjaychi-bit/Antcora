@@ -990,33 +990,43 @@ setTimeout(updateGridLayout, 0);
         }
     }
 
+    // --- 3D black hemisphere (terminator sweep) ---
+    // coverageAngle 0→π: amount of black coverage
+    // filling=true  → black enters from LEFT, grows rightward
+    // filling=false → black retreats to RIGHT, shrinks rightward
+    function drawBlackHemisphere(coverageAngle, filling) {
+        if (coverageAngle <= 0) return;
+        const cosA  = Math.cos(coverageAngle);
+        const steps = 80;
+
+        gctx.beginPath();
+        gctx.moveTo(cx, cy - R);
+        for (let i = 0; i <= steps; i++) {
+            const phi = Math.PI / 2 - (i / steps) * Math.PI;
+            // fill: terminator starts at left edge (−cosA), sweeps right
+            // uncover: terminator starts at left edge (+cosA reversed), retreats right
+            const tx = filling ? cx - R * cosA * Math.cos(phi)
+                               : cx + R * cosA * Math.cos(phi);
+            gctx.lineTo(tx, cy - R * Math.sin(phi));
+        }
+        // fill: close with LEFT arc  (clockwise,        anticlockwise=false)
+        // uncover: close with RIGHT arc (anticlockwise, anticlockwise=true)
+        gctx.arc(cx, cy, R, Math.PI / 2, -Math.PI / 2, !filling);
+        gctx.closePath();
+        gctx.fillStyle = '#1e1c1a';
+        gctx.fill();
+    }
+
     // --- full frame ---
-    function render(rot, bp) {
+    function render(rot, bp, filling) {
         gctx.clearRect(0, 0, CSS, CSS);
-        const la = 1 - bp;
-
-        // wireframe (no gradient fill — lines on beige bg)
-        if (la > 0.01) drawWire(rot, la);
-
-        // sphere outline
+        drawWire(rot, 1.0);
+        if (bp > 0) drawBlackHemisphere(bp * Math.PI, filling);
         gctx.beginPath();
         gctx.arc(cx, cy, R, 0, Math.PI * 2);
-        gctx.strokeStyle = `rgba(30,28,26,${0.2 + la * 0.8})`;
+        gctx.strokeStyle = '#1e1c1a';
         gctx.lineWidth   = 1.3;
         gctx.stroke();
-
-        // black fill overlay
-        if (bp > 0) {
-            gctx.beginPath();
-            gctx.arc(cx, cy, R, 0, Math.PI * 2);
-            gctx.fillStyle = `rgba(30,28,26,${bp})`;
-            gctx.fill();
-            gctx.beginPath();
-            gctx.arc(cx, cy, R, 0, Math.PI * 2);
-            gctx.strokeStyle = 'rgba(30,28,26,1)';
-            gctx.lineWidth   = 1.3;
-            gctx.stroke();
-        }
     }
 
     let t0 = null;
@@ -1025,13 +1035,20 @@ setTimeout(updateGridLayout, 0);
         const elapsed = (ts - t0) % TOTAL;
         const rot     = ((ts - t0) / 1000) * ROT_SPEED;
 
-        let bp = 0;
-        if      (elapsed < T_GLOBE)                        bp = 0;
-        else if (elapsed < T_GLOBE + T_FILL)               bp = ease((elapsed - T_GLOBE) / T_FILL);
-        else if (elapsed < T_GLOBE + T_FILL + T_BLACK)     bp = 1;
-        else                                               bp = 1 - ease((elapsed - T_GLOBE - T_FILL - T_BLACK) / T_UNFILL);
+        let bp = 0, filling = true;
+        if (elapsed < T_GLOBE) {
+            bp = 0;
+        } else if (elapsed < T_GLOBE + T_FILL) {
+            bp = ease((elapsed - T_GLOBE) / T_FILL);
+            filling = true;   // black enters from left
+        } else if (elapsed < T_GLOBE + T_FILL + T_BLACK) {
+            bp = 1;
+        } else {
+            bp = 1 - ease((elapsed - T_GLOBE - T_FILL - T_BLACK) / T_UNFILL);
+            filling = false;  // black retreats to right
+        }
 
-        render(rot, bp);
+        render(rot, bp, filling);
         requestAnimationFrame(tick);
     }
     requestAnimationFrame(tick);
