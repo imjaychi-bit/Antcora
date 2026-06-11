@@ -393,7 +393,16 @@
     <section class="community-section">
         <div class="community-burst" id="community-burst">
 
-            <!-- 6 background community avatars -->
+            <!-- scattered dots — primero en el DOM = más al fondo -->
+            <div class="community-dot community-dot--1"></div>
+            <div class="community-dot community-dot--2"></div>
+            <div class="community-dot community-dot--3"></div>
+            <div class="community-dot community-dot--4"></div>
+            <div class="community-dot community-dot--5"></div>
+            <div class="community-dot community-dot--6"></div>
+            <div class="community-dot community-dot--7"></div>
+
+            <!-- 6 background community avatars — encima de los puntos -->
             <div class="community-bg-av community-bg-av--1">
                 <img src="Avatar components/Skin/Skin_2_antcora.svg" alt="">
                 <img src="Avatar components/Eyes/Eyes_eyes 1.svg" alt="">
@@ -450,15 +459,6 @@
                 <img src="Avatar components/Glasses/Glasses_square glasses.svg" alt="">
             </div>
 
-            <!-- scattered dots -->
-            <div class="community-dot community-dot--1"></div>
-            <div class="community-dot community-dot--2"></div>
-            <div class="community-dot community-dot--3"></div>
-            <div class="community-dot community-dot--4"></div>
-            <div class="community-dot community-dot--5"></div>
-            <div class="community-dot community-dot--6"></div>
-            <div class="community-dot community-dot--7"></div>
-
             <!-- center: mirrors the user's customized avatar -->
             <div class="community-center-av">
                 <img class="clayer" id="clayer-skin"     src="" alt="">
@@ -476,9 +476,23 @@
         <div class="community-text">
             <h2 class="community-title">Be Part of Antcora</h2>
             <p class="community-desc">More than just coordinates. Antcora is a living archive of moments, places, and the people who make them special. Add your perspective to the crew and see the world through a new lens.</p>
-            <button class="btn-community">Join the community</button>
+            <button class="btn-pill">Join the community</button>
         </div>
     </section>
+
+    <footer class="site-footer">
+        <div class="footer-logo-wrap">
+            <img src="Recursos/Antcora logo.svg" alt="Antcora" class="footer-logo">
+        </div>
+        <div class="footer-bottom">
+            <span class="footer-copy">© 2026 Antcora Coorporation</span>
+            <nav class="footer-links">
+                <a href="#">Terms</a>
+                <a href="#">Privacy</a>
+                <a href="#">Cookies</a>
+            </nav>
+        </div>
+    </footer>
 
     <script src="js/codi.js"></script>
 </body>
