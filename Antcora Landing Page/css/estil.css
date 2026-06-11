@@ -276,7 +276,7 @@ h3 {
     min-height: 100vh;
     display: flex;
     align-items: center;
-    padding: 100px 7%;
+    padding: 100px 0;
     user-select: none;
 }
 
@@ -289,7 +289,6 @@ h3 {
     align-items: center;
     gap: 60px;
     box-shadow: 0 2px 20px rgba(0,0,0,0.06);
-    width: 100%;
 }
 
 .notif-visual {
@@ -299,56 +298,81 @@ h3 {
     display: flex;
     align-items: center;
     justify-content: center;
-    min-height: 320px;
+    min-height: 280px;
+    min-width: 0;
+    overflow: hidden;
 }
 
 .notif-glow {
     position: absolute;
     width: 640px;
     height: 280px;
-    background: radial-gradient(ellipse at center, rgba(148, 140, 124, 0.45) 0%, transparent 68%);
-    filter: blur(60px);
     border-radius: 50%;
     pointer-events: none;
 }
 
-.notif-cards {
+.notif-stage {
     position: relative;
-    width: clamp(320px, 52vw, 720px);
-    height: clamp(200px, 26vw, 380px);
+    width: 100%;
+    height: clamp(220px, 28vh, 360px);
+    background: #1e1c1a;
+    border-radius: 16px;
+    overflow: hidden;
 }
 
-.notif-slot {
+.notif-item {
     position: absolute;
     inset: 0;
     display: flex;
     align-items: center;
     justify-content: center;
-    animation: notifPop 10s ease-in-out infinite;
+    animation: notifPop 10s ease infinite;
     animation-fill-mode: backwards;
 }
 
-.notif-slot:last-child {
+.notif-item:nth-child(2) {
     animation-delay: 5s;
 }
 
-.notif-img--iphone {
-    width: 100%;
+.notif-item--iphone img {
+    width: 88%;
     height: auto;
-    max-width: 100%;
+    max-height: 88%;
+    filter: drop-shadow(0 6px 24px rgba(0,0,0,0.8));
 }
 
-.notif-img--watch {
-    width: clamp(140px, 18vw, 260px);
-    height: auto;
+.notif-item--watch img {
+    height: 72%;
+    width: auto;
+    filter: drop-shadow(0 6px 24px rgba(0,0,0,0.6));
 }
 
+/* pop in desde abajo → visible → sale hacia arriba → espera */
 @keyframes notifPop {
-    0%   { opacity: 0; transform: translateY(18px) scale(0.90); animation-timing-function: cubic-bezier(0.34, 1.4, 0.64, 1); }
-    5%   { opacity: 1; transform: translateY(0)    scale(1);    animation-timing-function: ease-in-out; }
-    40%  { opacity: 1; transform: translateY(0)    scale(1);    animation-timing-function: ease-in; }
-    47%  { opacity: 0; transform: translateY(-12px) scale(0.96); }
-    100% { opacity: 0; transform: translateY(18px)  scale(0.90); }
+    0%   { opacity: 0; transform: translateY(28px) scale(0.86); }
+    8%   { opacity: 1; transform: translateY(0)    scale(1);    }
+    44%  { opacity: 1; transform: translateY(0)    scale(1);    }
+    51%  { opacity: 0; transform: translateY(-12px) scale(0.96); }
+    100% { opacity: 0; transform: translateY(28px)  scale(0.86); }
+}
+
+/* ── Earth globe animation ───────────────────────────────── */
+.earth-wrap {
+    position: relative;
+    width: 100%;
+    height: clamp(220px, 28vh, 360px);
+    background: #ede8dc;
+    border-radius: 16px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.earth-canvas {
+    display: block;
+    width: 160px;
+    height: 160px;
 }
 
 .notif-content {
@@ -373,6 +397,175 @@ h3 {
     line-height: var(--text-body-lh);
     letter-spacing: var(--text-body-ls);
     color: #4a4540;
+}
+
+/* ── Notif carousel ── */
+.notif-carousel {
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+}
+
+.notif-carousel-track {
+    display: flex;
+    gap: 8.5vw;
+    padding-left: 8.5vw;
+    transition: transform 0.52s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: transform;
+}
+
+.notif-card {
+    flex: 0 0 74%;
+    cursor: pointer;
+}
+
+.notif-dots {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 20px;
+}
+
+.notif-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 100px;
+    border: none;
+    background: rgba(30,28,26,0.18);
+    cursor: pointer;
+    transition: background 0.25s, width 0.25s;
+    padding: 0;
+}
+
+.notif-dot--active {
+    width: 24px;
+    background: var(--ink);
+}
+
+/* ── Reading Radius animation ── */
+.radius-anim {
+    position: relative;
+    width: 100%;
+    height: clamp(200px, 26vh, 340px);
+    background: #ede8dc;
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+.ra-layer {
+    position: absolute;
+    inset: 0;
+}
+
+.ra-layer--blur {
+    filter: blur(4px);
+}
+
+.ra-layer--sharp {
+    clip-path: circle(0px at 50% 50%);
+    background: #ede8dc;
+}
+
+.ra-exp {
+    position: absolute;
+    left: var(--tx);
+    top: var(--ty);
+    width: 7px;
+    height: 7px;
+    background: var(--ink);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.ra-scope {
+    position: absolute;
+    inset: 0;
+}
+
+.ra-center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 12%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    border: 1.5px solid rgba(30,28,26,0.7);
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+}
+
+.ra-ring {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 66%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    border: 1.5px dashed rgba(30,28,26,0.55);
+    transform: translate(-50%, -50%) rotate(0deg);
+    animation: raRingSpin 12s linear infinite;
+    pointer-events: none;
+}
+
+@keyframes raRingSpin {
+    to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+
+/* ── Discover animation ── */
+.discover-anim {
+    position: relative;
+    width: 100%;
+    height: clamp(200px, 26vh, 340px);
+    background: #1e1c1a;
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+.discover-pin {
+    position: absolute;
+    width: 7px;
+    height: 7px;
+    background: #fff;
+    border-radius: 50%;
+    opacity: 0;
+    animation: discoverPop 5s ease-in-out infinite;
+}
+.discover-pin::after {
+    content: '';
+    position: absolute;
+    inset: -6px;
+    border-radius: 50%;
+    border: 1px solid rgba(255,255,255,0.3);
+    animation: discoverRing 5s ease-in-out infinite;
+}
+
+.discover-pin--1 { top: 28%; left: 22%; animation-delay: 0s; }
+.discover-pin--2 { top: 58%; left: 62%; animation-delay: 1s; }
+.discover-pin--3 { top: 18%; left: 72%; animation-delay: 2s; }
+.discover-pin--4 { top: 72%; left: 32%; animation-delay: 3s; }
+.discover-pin--5 { top: 42%; left: 82%; animation-delay: 4s; }
+
+.discover-pin--1::after { animation-delay: 0s; }
+.discover-pin--2::after { animation-delay: 1s; }
+.discover-pin--3::after { animation-delay: 2s; }
+.discover-pin--4::after { animation-delay: 3s; }
+.discover-pin--5::after { animation-delay: 4s; }
+
+@keyframes discoverPop {
+    0%   { transform: scale(0); opacity: 0; }
+    8%   { transform: scale(1.3); opacity: 1; }
+    18%  { transform: scale(1); opacity: 1; }
+    70%  { opacity: 0.7; }
+    90%  { opacity: 0; }
+    100% { opacity: 0; }
+}
+
+@keyframes discoverRing {
+    0%   { transform: scale(1); opacity: 0; }
+    8%   { opacity: 0.6; }
+    60%  { transform: scale(3); opacity: 0; }
+    100% { opacity: 0; }
 }
 
 /* ── Badges section ── */
@@ -655,32 +848,36 @@ h3 {
     }
 
     .notif-section {
-        padding: 32px 7%;
+        padding: 32px 0;
     }
 
     .notif-card {
+        flex: 0 0 82%;
         flex-direction: column;
         gap: 24px;
         padding: 24px;
     }
 
     .notif-visual {
-        order: 1;
+        order: 2;
         width: 100%;
     }
 
     .notif-content {
-        order: 2;
+        order: 1;
         max-width: 100%;
     }
 
-    .notif-cards {
-        width: clamp(280px, 80vw, 560px);
-        height: clamp(160px, 40vw, 300px);
+    .notif-stage,
+    .radius-anim,
+    .earth-wrap {
+        width: 100%;
+        height: clamp(180px, 40vw, 300px);
     }
 
-    .notif-img--watch {
-        width: clamp(110px, 22vw, 200px);
+    .notif-item--watch img {
+        height: 68%;
+        width: auto;
     }
 
     .notif-glow {

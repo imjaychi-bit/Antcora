@@ -775,3 +775,264 @@ setTimeout(updateGridLayout, 0);
     if (grid) new ResizeObserver(updateThumb).observe(grid);
     update();
 })();
+
+// ── Notif carousel ─────────────────────────────────────────────
+(() => {
+    const track    = document.getElementById('notif-track');
+    const dotsWrap = document.getElementById('notif-dots');
+    const carousel = document.getElementById('notif-carousel');
+    if (!track || !dotsWrap || !carousel) return;
+
+    const dots = Array.from(dotsWrap.querySelectorAll('.notif-dot'));
+    const REAL = dots.length;   // 3 cards reales
+    let current = 0;
+
+    // Clonar la primera card al final para el bucle infinito
+    track.appendChild(track.firstElementChild.cloneNode(true));
+
+    function cw()  { return track.firstElementChild.offsetWidth; }
+    function gap() { return parseInt(getComputedStyle(track).gap) || 20; }
+
+    function setDots(i) {
+        dots.forEach((d, j) => d.classList.toggle('notif-dot--active', j === i % REAL));
+    }
+
+    function goTo(i, silent = false) {
+        if (silent) track.style.transition = 'none';
+        track.style.transform = `translateX(${-i * (cw() + gap())}px)`;
+        if (silent) { track.offsetHeight; track.style.transition = ''; }
+        current = i % REAL;
+        setDots(current);
+    }
+
+    function advance() {
+        if (current === REAL - 1) {
+            // Animar hasta el clon (índice REAL) y luego saltar en silencio a 0
+            track.style.transform = `translateX(${-REAL * (cw() + gap())}px)`;
+            setDots(0);
+            current = 0;
+            track.addEventListener('transitionend', () => goTo(0, true), { once: true });
+        } else {
+            goTo(current + 1);
+        }
+    }
+
+    function retreat() {
+        if (current > 0) goTo(current - 1);
+    }
+
+    dots.forEach(dot => dot.addEventListener('click', () => goTo(Number(dot.dataset.index))));
+
+    carousel.addEventListener('click', e => {
+        const x = e.clientX - carousel.getBoundingClientRect().left;
+        if (x > cw() + gap()) advance();
+        if (x < 0) retreat();
+    });
+
+    let touchX = 0;
+    track.addEventListener('touchstart', e => { touchX = e.touches[0].clientX; }, { passive: true });
+    track.addEventListener('touchend', e => {
+        const diff = touchX - e.changedTouches[0].clientX;
+        if (Math.abs(diff) < 40) return;
+        diff > 0 ? advance() : retreat();
+    });
+})();
+
+// ── Reading Radius animation ────────────────────────────────────
+(() => {
+    const container  = document.querySelector('.radius-anim');
+    const sharpLayer = document.querySelector('.ra-layer--sharp');
+    const scope      = document.querySelector('.ra-scope');
+    const ring       = document.querySelector('.ra-ring');
+    if (!container || !sharpLayer || !scope || !ring) return;
+
+    // Waypoints as [x%, y%] within the container
+    const pts = [
+        [50, 50], [32, 33], [66, 30], [70, 60],
+        [42, 68], [34, 45], [60, 36], [50, 50]
+    ];
+    const DURATION = 18000;
+
+    function easeInOut(t) {
+        return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+    }
+
+    function getXY(ms) {
+        const n      = pts.length - 1;
+        const segMs  = DURATION / n;
+        const t0     = ms % DURATION;
+        const seg    = Math.min(Math.floor(t0 / segMs), n - 1);
+        const t      = easeInOut((t0 - seg * segMs) / segMs);
+        const [x0, y0] = pts[seg];
+        const [x1, y1] = pts[seg + 1];
+        return [x0 + (x1 - x0) * t, y0 + (y1 - y0) * t];
+    }
+
+    let start = null;
+
+    function tick(ts) {
+        if (start === null) start = ts;
+        const [px, py] = getXY(ts - start);
+
+        const W = container.offsetWidth;
+        const H = container.offsetHeight;
+        const r = ring.offsetWidth / 2;   // exact pixel radius — always matches the ring
+        const x = px / 100 * W;
+        const y = py / 100 * H;
+
+        sharpLayer.style.clipPath = `circle(${r}px at ${x}px ${y}px)`;
+        scope.style.transform     = `translate(${x - W / 2}px, ${y - H / 2}px)`;
+
+        requestAnimationFrame(tick);
+    }
+
+    requestAnimationFrame(tick);
+})();
+
+// ── 3D Earth globe ─────────────────────────────────────────
+(() => {
+    const el = document.getElementById('earth-canvas');
+    if (!el) return;
+
+    const dpr  = window.devicePixelRatio || 1;
+    const CSS  = 160;
+    el.width   = CSS * dpr;
+    el.height  = CSS * dpr;
+    const gctx = el.getContext('2d');
+    gctx.scale(dpr, dpr);
+
+    const cx = CSS / 2;
+    const cy = CSS / 2;
+    const R  = CSS * 0.44;   // ~70 px radius
+
+    // Cycle timing (ms)
+    const T_GLOBE   = 2800;  // globe visible, rotating
+    const T_FILL    = 1400;  // fill to black
+    const T_BLACK   = 2200;  // stay as dot
+    const T_UNFILL  = 1400;  // uncover to globe
+    const TOTAL = T_GLOBE + T_FILL + T_BLACK + T_UNFILL;
+
+    const ROT_SPEED = 0.55; // rad/s
+
+    function ease(t) { return t < .5 ? 2*t*t : 1 - Math.pow(-2*t+2, 2)/2; }
+
+    // --- wireframe drawing ---
+    function drawWire(rot, alpha) {
+        const LATS = [-60, -30, 0, 30, 60];
+        const MERS = 12;
+
+        // latitude parallels: front arc solid, back arc dashed + dim
+        for (const deg of LATS) {
+            const phi = deg * Math.PI / 180;
+            const r   = R * Math.cos(phi);
+            const sy  = cy - R * Math.sin(phi);
+
+            // back (dashed)
+            gctx.strokeStyle = `rgba(30,28,26,${alpha * 0.22})`;
+            gctx.lineWidth   = 0.7;
+            gctx.setLineDash([2, 4]);
+            gctx.beginPath();
+            let on = false;
+            for (let t = 0; t <= Math.PI * 2 + 0.05; t += 0.03) {
+                const z  = Math.cos(phi) * Math.cos(t + rot);
+                const sx = cx + r * Math.sin(t + rot);
+                if (z < 0) {
+                    on ? gctx.lineTo(sx, sy) : gctx.moveTo(sx, sy);
+                    on = true;
+                } else { on = false; }
+            }
+            gctx.stroke();
+            gctx.setLineDash([]);
+
+            // front (solid)
+            gctx.strokeStyle = `rgba(30,28,26,${alpha * 0.9})`;
+            gctx.beginPath();
+            on = false;
+            for (let t = 0; t <= Math.PI * 2 + 0.05; t += 0.03) {
+                const z  = Math.cos(phi) * Math.cos(t + rot);
+                const sx = cx + r * Math.sin(t + rot);
+                if (z >= 0) {
+                    on ? gctx.lineTo(sx, sy) : gctx.moveTo(sx, sy);
+                    on = true;
+                } else { on = false; }
+            }
+            gctx.stroke();
+        }
+
+        // longitude meridians: front solid, back dashed + dim
+        for (let i = 0; i < MERS; i++) {
+            const lam   = (i / MERS) * Math.PI * 2;
+            const zFace = Math.cos(lam + rot);
+            const pts   = [];
+            for (let j = 0; j <= 60; j++) {
+                const p  = (j / 60) * Math.PI - Math.PI / 2;
+                pts.push([cx + R * Math.cos(p) * Math.sin(lam + rot), cy - R * Math.sin(p)]);
+            }
+
+            // back
+            gctx.strokeStyle = `rgba(30,28,26,${alpha * 0.22})`;
+            gctx.lineWidth   = 0.7;
+            gctx.setLineDash([2, 4]);
+            if (zFace < 0) {
+                gctx.beginPath();
+                pts.forEach(([x, y], j) => j === 0 ? gctx.moveTo(x, y) : gctx.lineTo(x, y));
+                gctx.stroke();
+            }
+            gctx.setLineDash([]);
+
+            // front
+            if (zFace >= 0) {
+                gctx.strokeStyle = `rgba(30,28,26,${alpha * 0.9})`;
+                gctx.beginPath();
+                pts.forEach(([x, y], j) => j === 0 ? gctx.moveTo(x, y) : gctx.lineTo(x, y));
+                gctx.stroke();
+            }
+        }
+    }
+
+    // --- full frame ---
+    function render(rot, bp) {
+        gctx.clearRect(0, 0, CSS, CSS);
+        const la = 1 - bp;
+
+        // wireframe (no gradient fill — lines on beige bg)
+        if (la > 0.01) drawWire(rot, la);
+
+        // sphere outline
+        gctx.beginPath();
+        gctx.arc(cx, cy, R, 0, Math.PI * 2);
+        gctx.strokeStyle = `rgba(30,28,26,${0.2 + la * 0.8})`;
+        gctx.lineWidth   = 1.3;
+        gctx.stroke();
+
+        // black fill overlay
+        if (bp > 0) {
+            gctx.beginPath();
+            gctx.arc(cx, cy, R, 0, Math.PI * 2);
+            gctx.fillStyle = `rgba(30,28,26,${bp})`;
+            gctx.fill();
+            gctx.beginPath();
+            gctx.arc(cx, cy, R, 0, Math.PI * 2);
+            gctx.strokeStyle = 'rgba(30,28,26,1)';
+            gctx.lineWidth   = 1.3;
+            gctx.stroke();
+        }
+    }
+
+    let t0 = null;
+    function tick(ts) {
+        if (!t0) t0 = ts;
+        const elapsed = (ts - t0) % TOTAL;
+        const rot     = ((ts - t0) / 1000) * ROT_SPEED;
+
+        let bp = 0;
+        if      (elapsed < T_GLOBE)                        bp = 0;
+        else if (elapsed < T_GLOBE + T_FILL)               bp = ease((elapsed - T_GLOBE) / T_FILL);
+        else if (elapsed < T_GLOBE + T_FILL + T_BLACK)     bp = 1;
+        else                                               bp = 1 - ease((elapsed - T_GLOBE - T_FILL - T_BLACK) / T_UNFILL);
+
+        render(rot, bp);
+        requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+})();

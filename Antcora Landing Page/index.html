@@ -30,21 +30,83 @@
     </main>
 
     <section class="notif-section">
-        <div class="notif-card">
-            <div class="notif-visual">
-                <div class="notif-glow"></div>
-                <div class="notif-cards">
-                    <div class="notif-slot">
-                        <img src="Recursos/Antcora_Notification iphone.svg" class="notif-img notif-img--iphone" alt="iPhone notification">
+        <div class="notif-carousel" id="notif-carousel">
+            <div class="notif-carousel-track" id="notif-track">
+
+                <!-- Card 1: Reading Radius -->
+                <div class="notif-card">
+                    <div class="notif-visual">
+                        <div class="radius-anim">
+                            <div class="ra-layer ra-layer--blur">
+                                <span class="ra-exp" style="--tx:14%;--ty:20%"></span>
+                                <span class="ra-exp" style="--tx:78%;--ty:15%"></span>
+                                <span class="ra-exp" style="--tx:85%;--ty:68%"></span>
+                                <span class="ra-exp" style="--tx:12%;--ty:74%"></span>
+                                <span class="ra-exp" style="--tx:50%;--ty:8%"></span>
+                                <span class="ra-exp" style="--tx:90%;--ty:38%"></span>
+                                <span class="ra-exp" style="--tx:44%;--ty:48%"></span>
+                                <span class="ra-exp" style="--tx:56%;--ty:38%"></span>
+                                <span class="ra-exp" style="--tx:48%;--ty:60%"></span>
+                            </div>
+                            <div class="ra-layer ra-layer--sharp">
+                                <span class="ra-exp" style="--tx:14%;--ty:20%"></span>
+                                <span class="ra-exp" style="--tx:78%;--ty:15%"></span>
+                                <span class="ra-exp" style="--tx:85%;--ty:68%"></span>
+                                <span class="ra-exp" style="--tx:12%;--ty:74%"></span>
+                                <span class="ra-exp" style="--tx:50%;--ty:8%"></span>
+                                <span class="ra-exp" style="--tx:90%;--ty:38%"></span>
+                                <span class="ra-exp" style="--tx:44%;--ty:48%"></span>
+                                <span class="ra-exp" style="--tx:56%;--ty:38%"></span>
+                                <span class="ra-exp" style="--tx:48%;--ty:60%"></span>
+                            </div>
+                            <div class="ra-scope">
+                                <div class="ra-center"></div>
+                                <div class="ra-ring"></div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="notif-slot">
-                        <img src="Recursos/Antcora_Notification watch.svg" class="notif-img notif-img--watch" alt="Apple Watch notification">
+                    <div class="notif-content">
+                        <h2 class="notif-title">Reading Radius</h2>
+                        <p class="notif-desc">Your Reading Radius defines what you can access. Stories within range are yours to read. Anything beyond stays locked. To unlock them, you have to physically get closer.</p>
                     </div>
                 </div>
+
+                <!-- Card 2: Notifications -->
+                <div class="notif-card">
+                    <div class="notif-visual">
+                        <div class="notif-stage">
+                            <div class="notif-item notif-item--iphone">
+                                <img src="Recursos/Antcora_Notification iphone.svg" alt="iPhone notification">
+                            </div>
+                            <div class="notif-item notif-item--watch">
+                                <img src="Recursos/Antcora_Notification watch.svg" alt="Apple Watch notification">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="notif-content">
+                        <h2 class="notif-title">Notifications</h2>
+                        <p class="notif-desc">With Antcora, your phone notifies you the moment you're close to a hidden experience. Just walk the streets, wait for the buzz, and read authentic stories about the places right in front of you.</p>
+                    </div>
+                </div>
+
+                <!-- Card 3: Discover -->
+                <div class="notif-card">
+                    <div class="notif-visual">
+                        <div class="earth-wrap">
+                            <canvas class="earth-canvas" id="earth-canvas"></canvas>
+                        </div>
+                    </div>
+                    <div class="notif-content">
+                        <h2 class="notif-title">Hidden Everywhere</h2>
+                        <p class="notif-desc">The world around you is full of stories waiting to be found. Step outside, follow your curiosity, and uncover experiences hidden in plain sight, right where you least expect them.</p>
+                    </div>
+                </div>
+
             </div>
-            <div class="notif-content">
-                <h2 class="notif-title">Notifications</h2>
-                <p class="notif-desc">With Antcora, your phone notifies you the moment you're close to a hidden experience. Just walk the streets, wait for the buzz, and read authentic stories about the places right in front of you. Compatible with iOS & WatchOs.</p>
+            <div class="notif-dots" id="notif-dots">
+                <button class="notif-dot notif-dot--active" data-index="0"></button>
+                <button class="notif-dot" data-index="1"></button>
+                <button class="notif-dot" data-index="2"></button>
             </div>
         </div>
     </section>
