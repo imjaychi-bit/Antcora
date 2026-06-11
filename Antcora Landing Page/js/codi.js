@@ -802,8 +802,14 @@ if (communityBurst) {
     const REAL = dots.length;
 
     // DOM: [cloneLast, card1, card2, card3, cloneFirst]
-    track.insertBefore(track.lastElementChild.cloneNode(true), track.firstElementChild);
-    track.appendChild(track.children[1].cloneNode(true));
+    // Strip IDs from clones to avoid duplicates (e.g. earth-canvas)
+    function cloneStripped(el) {
+        const c = el.cloneNode(true);
+        c.querySelectorAll('[id]').forEach(n => n.removeAttribute('id'));
+        return c;
+    }
+    track.insertBefore(cloneStripped(track.lastElementChild), track.firstElementChild);
+    track.appendChild(cloneStripped(track.children[1]));
 
     // pos: DOM index — real cards at 1…REAL, clones at 0 and REAL+1
     let pos = 1;
