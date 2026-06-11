@@ -1133,6 +1133,7 @@ document.querySelectorAll('.xp-card').forEach(card => {
                     scale: 1 - i * SCALE,
                     y: i * PEEK,
                     transformOrigin: 'center top',
+                    force3D: false,  // use 2D matrix — preserves backface-visibility on children
                 });
                 const card = scene.querySelector('.xp-card');
                 if (card) card.style.pointerEvents = i === 0 ? 'auto' : 'none';
@@ -1147,12 +1148,14 @@ document.querySelectorAll('.xp-card').forEach(card => {
             tl.to(scenes[i], {
                 y: '-115%', scale: 1 - SCALE, opacity: 0,
                 duration: 1, ease: 'power2.inOut',
+                force3D: false,
             }, i);
             for (let j = i + 1; j < N; j++) {
                 const depth = j - i - 1;
                 tl.to(scenes[j], {
                     y: depth * PEEK, scale: 1 - depth * SCALE,
                     duration: 1, ease: 'power2.inOut',
+                    force3D: false,
                 }, i);
             }
         }
