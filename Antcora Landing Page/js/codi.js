@@ -1160,6 +1160,20 @@ document.querySelectorAll('.xp-card').forEach(card => {
             }
         }
 
+        // When the user scrolls away after the pin releases, flip the last card back
+        // onLeave fires when the snap lands on the last card (pin end = last snap point),
+        // so the card hasn't been flipped yet at that moment. Instead, watch for the
+        // first native scroll event that happens while at the last card.
+        let atLastCard = false;
+        const flipLastOnScroll = () => {
+            if (!atLastCard) return;
+            const lastCard = scenes[N - 1]?.querySelector('.xp-card');
+            if (lastCard?.classList.contains('is-flipped')) {
+                lastCard.classList.remove('is-flipped');
+            }
+        };
+        window.addEventListener('scroll', flipLastOnScroll, { passive: true });
+
         // ScrollTrigger pin + scrub + snap
         const st = ScrollTrigger.create({
             trigger: row,
@@ -1176,16 +1190,24 @@ document.querySelectorAll('.xp-card').forEach(card => {
             },
             animation: tl,
             onUpdate(self) {
-                const active = Math.round(self.progress * (N - 1));
+                const rawStep = self.progress * (N - 1);
+                const active  = Math.round(rawStep);
+                atLastCard = self.progress >= 0.98;
                 scenes.forEach((scene, i) => {
                     const card = scene.querySelector('.xp-card');
-                    if (card) card.style.pointerEvents = i === active ? 'auto' : 'none';
+                    if (!card) return;
+                    card.style.pointerEvents = i === active ? 'auto' : 'none';
+                    // As soon as a card starts scrolling away, flip it back to front
+                    if (rawStep > i + 0.02 && card.classList.contains('is-flipped')) {
+                        card.classList.remove('is-flipped');
+                    }
                 });
             },
         });
 
         // Cleanup when leaving mobile breakpoint
         return () => {
+            window.removeEventListener('scroll', flipLastOnScroll);
             st.kill();
             tl.kill();
             gsap.set(row, { clearProps: 'all' });

@@ -1411,17 +1411,6 @@ h3 {
     overflow: hidden;
 }
 
-.xp-views {
-    position: absolute;
-    top: 16px;
-    left: 16px;
-    font-size: var(--text-small-size);
-    font-weight: var(--text-small-weight);
-    letter-spacing: var(--text-small-ls);
-    color: var(--ink);
-    z-index: 2;
-}
-
 .xp-photo {
     flex: 1;
     border-radius: 14px;
