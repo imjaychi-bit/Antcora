@@ -150,6 +150,11 @@ h3 {
     font-size: var(--text-btn-size);
     font-weight: var(--text-btn-weight);
     letter-spacing: var(--text-btn-ls);
+    transition: opacity .18s ease;
+}
+
+@media (hover: hover) {
+    .btn-pill:hover { opacity: .75; }
 }
 
 .btn-pill--outline {
@@ -1287,6 +1292,29 @@ h3 {
     outline-offset: 2.5px;
 }
 
+.avatar-download-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    padding: 13px 20px;
+    background: var(--ink);
+    color: var(--bg);
+    border: none;
+    border-radius: 100px;
+    font-family: var(--font);
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: .01em;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: opacity .15s ease;
+}
+.avatar-download-btn:hover  { opacity: .8; }
+.avatar-download-btn:active { opacity: .6; }
+.avatar-download-btn:disabled { opacity: .5; cursor: default; }
+
 @media (max-width: 600px) {
     .avatar-section {
         padding: 0 4% 60px;
@@ -1487,14 +1515,78 @@ h3 {
     overflow: hidden;
 }
 
-.xp-photo--1 { background: #c2bfb9; }
-.xp-photo--2 { background: #bcc4c2; }
-.xp-photo--3 { background: #c8bfbb; }
-.xp-photo--4 { background: #c4beba; }
-.xp-photo--5 { background: #bfc3be; }
-.xp-photo--6 { background: #b8bcc4; }
-.xp-photo--7 { background: #c0c4be; }
-.xp-photo--8 { background: #c6c2bc; }
+/* Best pizza — wood oven, Trastevere */
+.xp-photo--1 {
+    background-color: #c2bfb9;
+    background-image:
+        linear-gradient(rgba(0,0,0,.10), rgba(0,0,0,.22)),
+        url('https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=800&q=80&fit=crop');
+    background-size: cover;
+    background-position: center;
+}
+/* Bookshop — Shakespeare & Company */
+.xp-photo--2 {
+    background-color: #bcc4c2;
+    background-image:
+        linear-gradient(rgba(0,0,0,.10), rgba(0,0,0,.22)),
+        url('https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=800&q=80&fit=crop');
+    background-size: cover;
+    background-position: center;
+}
+/* Paris dawn — Seine near Pont des Arts */
+.xp-photo--3 {
+    background-color: #c8bfbb;
+    background-image:
+        linear-gradient(rgba(0,0,0,.10), rgba(0,0,0,.22)),
+        url('https://images.unsplash.com/photo-1499856871958-5b9627545d1a?w=800&q=80&fit=crop');
+    background-size: cover;
+    background-position: center;
+}
+/* Espresso — Italian bar counter */
+.xp-photo--4 {
+    background-color: #c4beba;
+    background-image:
+        linear-gradient(rgba(0,0,0,.10), rgba(0,0,0,.22)),
+        url('https://images.unsplash.com/photo-1510591509098-f4fdc6d0ff04?w=800&q=80&fit=crop');
+    background-size: cover;
+    background-position: center;
+}
+/* Palais Royal — formal garden, gravel paths */
+.xp-photo--5 {
+    background-color: #bfc3be;
+    background-image:
+        linear-gradient(rgba(0,0,0,.10), rgba(0,0,0,.22)),
+        url('https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80&fit=crop');
+    background-size: cover;
+    background-position: center;
+}
+/* Venice — canal, Libreria Acqua Alta */
+.xp-photo--6 {
+    background-color: #b8bcc4;
+    background-image:
+        linear-gradient(rgba(0,0,0,.10), rgba(0,0,0,.22)),
+        url('https://images.unsplash.com/photo-1523906834658-6e24ef2386f9?w=800&q=80&fit=crop');
+    background-size: cover;
+    background-position: center;
+}
+/* Market at dawn — produce stalls */
+.xp-photo--7 {
+    background-color: #c0c4be;
+    background-image:
+        linear-gradient(rgba(0,0,0,.10), rgba(0,0,0,.22)),
+        url('https://images.unsplash.com/photo-1488459716781-31db52582fe9?w=800&q=80&fit=crop');
+    background-size: cover;
+    background-position: center;
+}
+/* Madrid wrong turn — narrow alley, courtyard */
+.xp-photo--8 {
+    background-color: #c6c2bc;
+    background-image:
+        linear-gradient(rgba(0,0,0,.10), rgba(0,0,0,.22)),
+        url('https://images.unsplash.com/photo-1539037116277-4db20889f2d4?w=800&q=80&fit=crop');
+    background-size: cover;
+    background-position: center;
+}
 
 .xp-avatar-badge {
     position: absolute;

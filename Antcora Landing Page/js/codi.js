@@ -1,3 +1,9 @@
+// ── CTA buttons ───────────────────────────────────────────────
+const CTA_URL = 'https://www.figma.com/proto/IBkDo1jJQZUbogvV4GRAsC/Projecte-Integrat?node-id=1471-43969&t=ve8S0FMUq12WotX6-0&scaling=scale-down&content-scaling=fixed&starting-point-node-id=1471%3A43969&show-proto-sidebar=1&page-id=122%3A2';
+document.querySelectorAll('.btn-pill').forEach(btn => {
+    btn.addEventListener('click', () => window.open(CTA_URL, '_blank', 'noopener'));
+});
+
 // ── Cursor trail ──────────────────────────────────────────────
 const cursor = document.getElementById('custom-cursor');
 const canvas = document.getElementById('trail-canvas');
@@ -593,6 +599,77 @@ AVATAR_CATEGORIES.forEach(cat => setLayer(cat, avatarState.sel[cat]));
 renderTabs();
 renderGrid();
 setTimeout(updateGridLayout, 0);
+
+// ── Avatar download ──────────────────────────────────────────
+document.getElementById('avatar-download-btn')?.addEventListener('click', async function () {
+    const btn = this;
+    btn.disabled = true;
+    const orig = btn.innerHTML;
+    btn.textContent = 'Generating…';
+
+    const SIZE   = 800;  // avatar square
+    const STRIP  = 180;  // logo strip below
+    const RADIUS = 64;   // card corner radius
+    const H      = SIZE + STRIP;
+
+    const canvas  = document.createElement('canvas');
+    canvas.width  = SIZE;
+    canvas.height = H;
+    const ctx = canvas.getContext('2d');
+
+    // Rounded-rect clip — all drawing stays within it
+    ctx.beginPath();
+    ctx.roundRect(0, 0, SIZE, H, RADIUS);
+    ctx.clip();
+
+    // White background (full card)
+    ctx.fillStyle = '#ffffff';
+    ctx.fillRect(0, 0, SIZE, H);
+
+    // Avatar layers in stacking order
+    const ORDER = [
+        'layer-skin', 'layer-eyes', 'layer-brows', 'layer-earrings',
+        'layer-details', 'layer-mouth', 'layer-nose', 'layer-hair', 'layer-glasses',
+    ];
+    for (const id of ORDER) {
+        const el = document.getElementById(id);
+        if (!el || !el.src || el.style.display === 'none') continue;
+        ctx.filter = (id === 'layer-hair' && avatarState.hairColor.filter)
+            ? avatarState.hairColor.filter : 'none';
+        try { ctx.drawImage(el, 0, 0, SIZE, SIZE); } catch (_) {}
+    }
+    ctx.filter = 'none';
+
+    // Logo strip — light grey separator
+    ctx.fillStyle = '#f2f2f2';
+    ctx.fillRect(0, SIZE, SIZE, STRIP);
+
+    // Logo — "ANTS by Antcora logo.svg"
+    const logo = new Image();
+    logo.src = 'Recursos/ANTS by Antcora logo.svg';
+    await logo.decode().catch(() => {});
+    const lh = 52;
+    const lw = (logo.naturalWidth > 0 && logo.naturalHeight > 0)
+        ? Math.round(lh * logo.naturalWidth / logo.naturalHeight)
+        : Math.round(lh * 4.2);
+    ctx.drawImage(
+        logo,
+        Math.round((SIZE - lw) / 2),
+        SIZE + Math.round((STRIP - lh) / 2),
+        lw, lh
+    );
+
+    // Trigger download
+    canvas.toBlob(blob => {
+        const a   = document.createElement('a');
+        a.href     = URL.createObjectURL(blob);
+        a.download = 'my-ant.png';
+        a.click();
+        setTimeout(() => URL.revokeObjectURL(a.href), 8000);
+        btn.disabled = false;
+        btn.innerHTML = orig;
+    }, 'image/png');
+});
 
 // Community burst — fires once when section enters viewport
 const communityBurst = document.getElementById('community-burst');
