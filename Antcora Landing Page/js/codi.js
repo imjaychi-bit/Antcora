@@ -634,9 +634,45 @@ document.getElementById('avatar-download-btn')?.addEventListener('click', async 
     for (const id of ORDER) {
         const el = document.getElementById(id);
         if (!el || !el.src || el.style.display === 'none') continue;
-        ctx.filter = (id === 'layer-hair' && avatarState.hairColor.filter)
-            ? avatarState.hairColor.filter : 'none';
-        try { ctx.drawImage(el, 0, 0, SIZE, SIZE); } catch (_) {}
+
+        if (id === 'layer-hair' && avatarState.hairColor.filter) {
+            const hFilter = avatarState.hairColor.filter;
+            const bmatch  = hFilter.match(/brightness\(([\d.]+)\)/);
+            const bval    = bmatch ? parseFloat(bmatch[1]) : 1;
+            const desat   = /saturate\(\s*0\s*\)/.test(hFilter);
+
+            const off    = document.createElement('canvas');
+            off.width    = SIZE;
+            off.height   = SIZE;
+            const offCtx = off.getContext('2d');
+            try {
+                offCtx.drawImage(el, 0, 0, SIZE, SIZE);
+                const imgData = offCtx.getImageData(0, 0, SIZE, SIZE);
+                const d = imgData.data;
+                for (let i = 0; i < d.length; i += 4) {
+                    if (d[i + 3] === 0) continue;
+                    let r = Math.min(255, d[i]     * bval);
+                    let g = Math.min(255, d[i + 1] * bval);
+                    let b = Math.min(255, d[i + 2] * bval);
+                    if (desat) {
+                        const lum = 0.299 * r + 0.587 * g + 0.114 * b;
+                        r = g = b = lum;
+                    }
+                    d[i]     = r;
+                    d[i + 1] = g;
+                    d[i + 2] = b;
+                }
+                offCtx.putImageData(imgData, 0, 0);
+                ctx.drawImage(off, 0, 0);
+            } catch (_) {
+                ctx.filter = hFilter;
+                try { ctx.drawImage(el, 0, 0, SIZE, SIZE); } catch (_2) {}
+                ctx.filter = 'none';
+            }
+        } else {
+            ctx.filter = 'none';
+            try { ctx.drawImage(el, 0, 0, SIZE, SIZE); } catch (_) {}
+        }
     }
     ctx.filter = 'none';
 
